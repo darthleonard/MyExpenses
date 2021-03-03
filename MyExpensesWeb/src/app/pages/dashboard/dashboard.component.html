@@ -1,0 +1,25 @@
+<app-navbar></app-navbar>
+
+<div class="container" style="max-width: 75%; padding-top: 0.4em;">
+    <div class="row">
+      <div class="col-sm">
+
+        <app-newer></app-newer>
+
+      </div>
+      <div class="col-sm">
+        
+        <div class="card-columns">
+          <div *ngFor="let item of Tileset" class="card border-secondary mb-3" style="max-width: 18rem;">
+            <div class="card-header"> {{ item.label }} </div>
+            <div class="card-body text-secondary text-right">
+              <h5 class="card-title"> {{ item.value }} </h5>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+<app-latest [Expenses]="Expenses"></app-latest>
