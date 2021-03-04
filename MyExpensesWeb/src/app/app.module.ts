@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { SummatoryComponent } from './components/summatory/summatory.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NewerComponent } from './components/newer/newer.component';
+import { Dashboard2Component } from './pages/dashboard2/dashboard2.component';
 
 @NgModule({
   declarations: [
@@ -17,12 +19,14 @@ import { NewerComponent } from './components/newer/newer.component';
     DashboardComponent,
     SummatoryComponent,
     NavbarComponent,
-    NewerComponent
+    NewerComponent,
+    Dashboard2Component
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
