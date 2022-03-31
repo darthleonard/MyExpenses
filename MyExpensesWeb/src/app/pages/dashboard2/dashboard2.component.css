@@ -1,0 +1,10 @@
+.table {
+    /* width: 75%; */
+    margin: 0 auto;
+}
+
+.table * {
+    border: 1px solid;
+    padding: .3em;
+    text-align: center;
+}

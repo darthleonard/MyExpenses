@@ -30,4 +30,8 @@ export class DashboardComponent implements OnInit {
     this.Tileset.push(new Tile("Electricity", this.Expenses.reduce((sum, current) => sum + Number(current.Electricity), 0)));
     this.Tileset.push(new Tile("Fuel", NaN));
   }
+
+  onRecordSelected(record: ExpenseRecord) {
+    console.log(record);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ExpenseRecord } from 'src/app/models/expense-record.model';
 import { ConsumptionService } from 'src/app/services/consumption.service';
 
@@ -9,6 +9,7 @@ import { ConsumptionService } from 'src/app/services/consumption.service';
 })
 export class LatestComponent implements OnInit {
   @Input() Expenses: ExpenseRecord[] = [];
+  @Output() recordSelected = new EventEmitter<ExpenseRecord>();
   
   displayedColumns: string[] = ['Date', 'Rent', 'PaidTv', 'Water', 'Electricity', 'Gas', 'Total'];
 
@@ -19,7 +20,7 @@ export class LatestComponent implements OnInit {
   }
 
   onRecordClick(record: ExpenseRecord) {
-    console.log(record);
+    this.recordSelected.emit(record);
   }
 
 }
