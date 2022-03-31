@@ -1,0 +1,15 @@
+<p>form works!</p>
+
+<form [formGroup]="forma" (ngSubmit)="guardar()">
+    <div class="form-group row" *ngFor="let c of controls">
+        <label for="inputPeriod" class="col-sm-2 col-form-label"> {{ c }} </label>
+        <div class="col-sm-10">
+            <input
+                class="form-control" 
+                id="inputPeriod" 
+                placeholder="last value" 
+                [formControlName]=c
+                [class.is-invalid]="InvalidPeriod">
+        </div>
+    </div>
+</form>
