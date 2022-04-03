@@ -21,27 +21,13 @@ export class Dashboard2Component implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const metadata = {
-      Period: ['', Validators.required],
-      Rent: [''],
-      PaidTv: [''],
-      Water: [''],
-      Electricity: [''],
-      Gas: [''],
-    }
-
-
-    const entity = {
-      nombre: 'nom', apellido: 'ape', correo: 'a@c'
-    };
-    //this.form.createForm(entity);
-    this.testControls();
+    const controls = this.testControls();
+    this.form.createForm(controls);
     this.cd.detectChanges();
-
   }
 
   testControls() {
-    const controls = [
+    return [
       {
         fieldName: "period1",
         displayName: "Period 1",
@@ -70,7 +56,6 @@ export class Dashboard2Component implements OnInit, AfterViewInit {
         type: "FomrDataType.ShortDate or something like that" // numeric, string, date, etc...
       }
     ];
-    this.form.createFormFromControls(controls);
   }
 
 }

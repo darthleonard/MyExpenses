@@ -16,7 +16,7 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createFormFromControls(controls: FormControl[]) {
+  createForm(controls: FormControl[]) {
     var formGroup = {};
     controls.forEach(control => formGroup[control.fieldName] = ['', control.required, control.validatorsAsync]);
     this.forma = this.fb.group(formGroup);
