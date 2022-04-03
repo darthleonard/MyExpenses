@@ -8,43 +8,32 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
   forma: FormGroup;
-  controls: any;
+  controls: FormControl[];
+  entity: any;
 
-  constructor(private fb: FormBuilder) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
   }
 
-  createForm() {
-    const aux = {
-      nombre: 'a', apellido: 'b', correo: 'c'
-    };
-
-    var formControl = {};
-
-    this.controls = Object.keys(aux);
-    this.controls.forEach(p => formControl[p] = ['', Validators.required]);
-
-    console.log(formControl);
-
-    this.forma = this.fb.group(formControl);
+  createFormFromControls(controls: FormControl[]) {
+    var formGroup = {};
+    controls.forEach(control => formGroup[control.fieldName] = ['', control.required, control.validatorsAsync]);
+    this.forma = this.fb.group(formGroup);
+    this.controls = controls;
   }
 
   guardar() {
-    console.log(this.forma);
+    console.log(this.forma.value);
   }
 }
 
 interface FormControl {
   fieldName: string;
-  validatorsSync: string;
-  validatorsAsync: string;
-}
-
-type SomeRecord = {
-  nombre: string;
-  apellido: number;
-  correo: string;
+  displayName: string;
+  required: Validators;
+  validatorsAsync: any;
+  visible: boolean;
+  readonly: boolean;
+  type: any; // numeric, string, date, etc...
 }
