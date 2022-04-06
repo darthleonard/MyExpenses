@@ -26,6 +26,10 @@ export class FormComponent implements OnInit {
   guardar() {
     console.log(this.forma.value);
   }
+
+  onInput(value: string) {
+    value = value.replace(/[^0-9.]/g, ''); value = value.replace(/(\..*)\./g, '$1');
+  }
 }
 
 interface FormControl {
