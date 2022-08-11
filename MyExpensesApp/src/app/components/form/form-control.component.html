@@ -1,0 +1,34 @@
+<ng-container [formGroup]="form">
+  <ion-item>
+    <ion-label position="floating" [attr.for]="formControltMetadata.key">{{
+      formControltMetadata.label
+    }}</ion-label>
+
+    <ng-container
+     [ngSwitch]="formControltMetadata.controlType">
+      <ion-input
+        *ngSwitchCase="'textbox'"
+        [formControlName]="formControltMetadata.key"
+        [id]="formControltMetadata.key"
+        [type]="formControltMetadata.type"
+      ></ion-input>
+
+      <ion-select
+        [id]="formControltMetadata.key"
+        *ngSwitchCase="'dropdown'"
+        [formControlName]="formControltMetadata.key"
+      >
+        <ion-select-option
+          *ngFor="let opt of formControltMetadata.dropdownOptions"
+          [value]="opt.key"
+        >
+          {{ opt.value }}
+        </ion-select-option>
+      </ion-select>
+    </ng-container>
+
+    <ng-container class="errorMessage" *ngIf="!isValid">
+      {{ formControltMetadata.label }} is required
+    </ng-container>
+  </ion-item>
+</ng-container>

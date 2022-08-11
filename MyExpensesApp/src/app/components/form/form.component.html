@@ -1,0 +1,18 @@
+<div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div *ngFor="let controlMetadata of formControlsMetadata" class="form-row">
+      <app-form-control
+        [formControltMetadata]="controlMetadata"
+        [form]="form"
+      ></app-form-control>
+    </div>
+
+    <div class="form-row">
+      <ion-button type="submit" [disabled]="!form.valid">Save</ion-button>
+    </div>
+  </form>
+
+  <div *ngIf="payLoad" class="form-row">
+    <strong>Saved the following values</strong><br />{{ payLoad }}
+  </div>
+</div>
