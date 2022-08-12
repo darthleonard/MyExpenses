@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Shopping, ShoppingRepository } from './shopping';
+import { Shopping } from 'src/app/database/database';
+import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 
 @Component({
   selector: 'app-shopping',
@@ -8,43 +10,19 @@ import { Shopping, ShoppingRepository } from './shopping';
   styleUrls: ['./shopping.page.scss'],
 })
 export class ShoppingPage implements OnInit {
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private readonly router: Router,
+    private readonly dataService: ShoppingDataService,
+    private readonly alertController: AlertController
+  ) {}
 
-  shoppingRepository = {
-    shoppingLists: [
-      {
-        id: 'a',
-        creationDate: new Date(),
-        lastModDate: new Date(),
-        effectiveDate: new Date(),
-        name: 'utiles escolares',
-        products: [],
-      } as Shopping,
-      {
-        id: 'b',
-        creationDate: new Date(),
-        lastModDate: new Date(),
-        effectiveDate: new Date(),
-        name: 'despensa',
-        products: [],
-      } as Shopping,
-      {
-        id: 'c',
-        creationDate: new Date(),
-        lastModDate: new Date(),
-        effectiveDate: new Date(),
-        name: 'name of list 3',
-        products: [],
-      } as Shopping,
-    ],
-  } as ShoppingRepository;
+  shoppingLists: Shopping[] = [];
 
-  ngOnInit() {}
-
-  // onItemClick() {
-  //   console.log('navigate to list');
-  //   this.router.navigate(['/shopping-list'])
-  // }
+  ngOnInit() {
+    this.dataService
+      .getShoppingLists()
+      .subscribe((r) => (this.shoppingLists = r));
+  }
 
   async onAddClick() {
     await this.presentAlert();
@@ -55,8 +33,7 @@ export class ShoppingPage implements OnInit {
   }
 
   async onDeleteClick(item: Shopping) {
-    this.shoppingRepository.shoppingLists =
-      this.shoppingRepository.shoppingLists.filter((s) => s.id !== item.id);
+    this.dataService.delete(item);
   }
 
   private async presentAlert(item?: Shopping) {
@@ -80,8 +57,8 @@ export class ShoppingPage implements OnInit {
         },
         {
           text: 'Ok',
-          handler: (alertData) => {
-            this.someFunction(alertData, item);
+          handler: async (alertData) => {
+            await this.someFunction(alertData, item);
           },
         },
       ],
@@ -90,11 +67,14 @@ export class ShoppingPage implements OnInit {
     await alert.present();
   }
 
-  private someFunction(alertData, item) {
+  private async someFunction(alertData, item) {
     if (item) {
       item.name = alertData.name;
+      this.dataService.saveShoppingLists(item);
     } else if (alertData.name) {
       console.log('proceed create', alertData);
+      await this.dataService.saveShoppingLists(alertData);
+      //this.router.navigate(['shopping/shopping-list', item.id]);
     } else {
       console.log('data invalid');
     }

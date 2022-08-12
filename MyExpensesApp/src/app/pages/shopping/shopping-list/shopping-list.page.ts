@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Product, Shopping } from '../shopping';
+import { Shopping } from 'src/app/database/database';
+import { ShoppingDataService } from 'src/app/database/shopping-data.service';
+import { Product } from '../shopping';
 
 @Component({
   selector: 'app-shopping-list',
@@ -8,115 +11,41 @@ import { Product, Shopping } from '../shopping';
   styleUrls: ['./shopping-list.page.scss'],
 })
 export class ShoppingListPage implements OnInit {
+  
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly dataService: ShoppingDataService,
+    private readonly alertController: AlertController
+  ) {}
 
-  constructor(private alertController: AlertController) { }
-
-  shopping = {
-    id: 'a',
-    creationDate: new Date(),
-    lastModDate: new Date(),
-    effectiveDate: new Date(),
-    name: 'utiles escolares',
-    products: [
-      {
-        id: 'a',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      },
-      {
-        id: 'b',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      },
-      {
-        id: 'c',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      },
-      {
-        id: 'd',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      },
-      {
-        id: 'e',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      },
-      {
-        id: 'f',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      },
-      {
-        id: 'g',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      },
-      {
-        id: 'h',
-        name: 'product name',
-        brand: 'product brand',
-        store: 'where it was bought',
-        unitPrice: 3.5,
-        quantity: 2,
-        amount: 3.5 * 2,
-        onCar: true
-      }
-    ],
-  } as Shopping;
+  shopping: Shopping;
 
   ngOnInit() {
+    this.route.params.subscribe(async (p) => {
+      this.shopping = await this.dataService.getShoppingList(Number(p['id']));
+      if (!this.shopping.products) this.shopping.products = [];
+    });
   }
 
   onAddClick() {
     this.presentAlert();
   }
 
-  onEditClick(product: Product) {
+  onEditClick(product: any) {
     this.presentAlert(product);
   }
 
-  onDeleteClick(product: Product) {
-    this.shopping.products = this.shopping.products.filter(p => p.id !== product.id);
+  onDeleteClick(product: any) {
+    this.shopping.products = this.shopping.products.filter(
+      (p) => p.id !== product.id
+    );
   }
 
-  private async presentAlert(product?: Product) {
+  onSaveList() {
+    this.dataService.saveShoppingLists(this.shopping);
+  }
+
+  private async presentAlert(product?: any) {
     const title = product ? 'Edit' : 'New';
     const alert = await this.alertController.create({
       header: `${title} Product`,
@@ -125,30 +54,30 @@ export class ShoppingListPage implements OnInit {
         {
           name: 'name',
           placeholder: 'Name',
-          value: product?.name
+          value: product?.name,
         },
         {
           name: 'brand',
           placeholder: 'Brand',
-          value: product?.brand
+          value: product?.brand,
         },
         {
           name: 'store',
           placeholder: 'Store',
-          value: product?.store
+          value: product?.store,
         },
         {
           name: 'unitPrice',
           placeholder: 'Price',
           value: product?.unitPrice,
-          type: 'number'
+          type: 'number',
         },
         {
           name: 'quantity',
           placeholder: 'Quantity',
           value: product?.quantity,
-          type: 'number'
-        }
+          type: 'number',
+        },
       ],
       buttons: [
         {
@@ -161,7 +90,7 @@ export class ShoppingListPage implements OnInit {
         {
           text: 'Ok',
           handler: (alertData) => {
-            this.saveProduct(alertData, product);
+            this.addProduct(alertData, product);
           },
         },
       ],
@@ -170,15 +99,26 @@ export class ShoppingListPage implements OnInit {
     await alert.present();
   }
 
-  private saveProduct(alertData, product) {
-    if(product) {
-      product.name = alertData.name;
+  private addProduct(alertData, product) {
+    if (product) {
+      product.name = alertData.name,
+      product.brand = alertData.brand,
+      product.store = alertData.store,
+      product.unitPrice = alertData.unitPrice,
+      product.quantity = alertData.quantity,
+      product.amount = Number(alertData.unitPrice) * Number(alertData.quantity),
+      product.onCar = alertData.onCar
     } else {
-      this.shopping.products.push(alertData);
+      this.shopping.products.push({
+        id: this.shopping.products.length + 1,
+        name: alertData.name,
+        brand: alertData.brand,
+        store: alertData.store,
+        unitPrice: alertData.unitPrice,
+        quantity: alertData.quantity,
+        amount: Number(alertData.unitPrice) * Number(alertData.quantity),
+        onCar: alertData.onCar
+      });
     }
-  }
-
-  onSaveList() {
-
   }
 }

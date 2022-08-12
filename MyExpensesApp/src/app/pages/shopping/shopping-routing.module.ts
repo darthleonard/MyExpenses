@@ -9,7 +9,7 @@ const routes: Routes = [
     component: ShoppingPage
   },
   {
-    path: 'shopping/shopping-list',
+    path: 'shopping-list/:id',
     loadChildren: () => import('./shopping-list/shopping-list.module').then( m => m.ShoppingListPageModule)
   }
 ];

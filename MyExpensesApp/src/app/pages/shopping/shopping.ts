@@ -1,15 +1,3 @@
-export type ShoppingRepository = {
-    shoppingLists: Shopping[]
-}
-
-export type Shopping = {
-    id: string,
-    creationDate: Date,
-    lastModDate: Date,
-    effectiveDate: Date,
-    name: string,
-    products: Product[]
-}
 
 export type Product = {
     id: string,

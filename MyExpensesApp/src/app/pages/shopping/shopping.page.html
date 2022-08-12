@@ -2,16 +2,16 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let shoppingList of shoppingRepository.shoppingLists">
+    <ion-item *ngFor="let shoppingList of shoppingLists">
       <ion-item-sliding>
-        <ion-item [routerLink]="['shopping/shopping-list']">
+        <ion-item [routerLink]="['shopping-list', shoppingList.id]">
           <ion-grid>
             <ion-row>
               <ion-col> {{ shoppingList.name }} </ion-col>
             </ion-row>
             <ion-row>
               <ion-col>
-                <small> {{ shoppingList.effectiveDate | date }} </small>
+                <small> Date: {{ shoppingList.effectiveDate | date }} </small>
               </ion-col>
               <ion-col class="ion-text-end"> $ Amount </ion-col>
             </ion-row>
