@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Shopping } from 'src/app/database/database';
 import { ShoppingDataService } from 'src/app/database/shopping-data.service';
+import DataUtils from 'src/app/utils/data-utils';
 import { Product } from '../shopping';
+import { ProductModalPage } from './product-modal/product-modal.page';
 
 @Component({
   selector: 'app-shopping-list',
@@ -11,11 +13,10 @@ import { Product } from '../shopping';
   styleUrls: ['./shopping-list.page.scss'],
 })
 export class ShoppingListPage implements OnInit {
-  
   constructor(
     private readonly route: ActivatedRoute,
     private readonly dataService: ShoppingDataService,
-    private readonly alertController: AlertController
+    private readonly modalController: ModalController
   ) {}
 
   shopping: Shopping;
@@ -28,11 +29,11 @@ export class ShoppingListPage implements OnInit {
   }
 
   onAddClick() {
-    this.presentAlert();
+    this.openProductModal();
   }
 
   onEditClick(product: any) {
-    this.presentAlert(product);
+    this.openProductModal(product);
   }
 
   onDeleteClick(product: any) {
@@ -45,80 +46,29 @@ export class ShoppingListPage implements OnInit {
     this.dataService.saveShoppingLists(this.shopping);
   }
 
-  private async presentAlert(product?: any) {
-    const title = product ? 'Edit' : 'New';
-    const alert = await this.alertController.create({
-      header: `${title} Product`,
+  private async openProductModal(product?: any) {
+    const modal = await this.modalController.create({
+      component: ProductModalPage,
+      componentProps: {
+        product: product,
+      },
       backdropDismiss: false,
-      inputs: [
-        {
-          name: 'name',
-          placeholder: 'Name',
-          value: product?.name,
-        },
-        {
-          name: 'brand',
-          placeholder: 'Brand',
-          value: product?.brand,
-        },
-        {
-          name: 'store',
-          placeholder: 'Store',
-          value: product?.store,
-        },
-        {
-          name: 'unitPrice',
-          placeholder: 'Price',
-          value: product?.unitPrice,
-          type: 'number',
-        },
-        {
-          name: 'quantity',
-          placeholder: 'Quantity',
-          value: product?.quantity,
-          type: 'number',
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Confirm Cancel');
-          },
-        },
-        {
-          text: 'Ok',
-          handler: (alertData) => {
-            this.addProduct(alertData, product);
-          },
-        },
-      ],
+      cssClass: 'half-modal',
     });
-
-    await alert.present();
-  }
-
-  private addProduct(alertData, product) {
-    if (product) {
-      product.name = alertData.name,
-      product.brand = alertData.brand,
-      product.store = alertData.store,
-      product.unitPrice = alertData.unitPrice,
-      product.quantity = alertData.quantity,
-      product.amount = Number(alertData.unitPrice) * Number(alertData.quantity),
-      product.onCar = alertData.onCar
-    } else {
-      this.shopping.products.push({
-        id: this.shopping.products.length + 1,
-        name: alertData.name,
-        brand: alertData.brand,
-        store: alertData.store,
-        unitPrice: alertData.unitPrice,
-        quantity: alertData.quantity,
-        amount: Number(alertData.unitPrice) * Number(alertData.quantity),
-        onCar: alertData.onCar
-      });
-    }
+    modal.onDidDismiss().then(async (data) => {
+      const paramsFilter = data?.data;
+      if (paramsFilter) {
+        paramsFilter.amount = Number(paramsFilter.unitPrice) * Number(paramsFilter.quantity);
+        if(paramsFilter.id) {
+          let p = this.shopping.products.find(p => p.id === paramsFilter.id);
+          let index = this.shopping.products.indexOf(p);
+          this.shopping.products[index] = paramsFilter;
+        } else {
+          paramsFilter.id = DataUtils.createUUID();
+          this.shopping.products.push(paramsFilter);
+        }
+      }
+    });
+    await modal.present();
   }
 }

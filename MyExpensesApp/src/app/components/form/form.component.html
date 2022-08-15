@@ -2,14 +2,26 @@
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
     <div *ngFor="let controlMetadata of formControlsMetadata" class="form-row">
       <app-form-control
+        *ngIf="controlMetadata.visible"
         [formControltMetadata]="controlMetadata"
         [form]="form"
       ></app-form-control>
     </div>
 
-    <div class="form-row">
-      <ion-button type="submit" [disabled]="!form.valid">Save</ion-button>
-    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngIf="showCancelButton">
+          <ion-button color="danger" (click)="onCancel()" expand="block">
+            Cancel
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button color="primary" type="submit" [disabled]="!form.valid" expand="block">
+            Ok
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </form>
 
   <div *ngIf="payLoad" class="form-row">

@@ -6,6 +6,7 @@ export class FormControlMetadata<T> {
   order: number;
   controlType: string;
   type: string;
+  visible: boolean;
   dropdownOptions: { key: string; value: string }[];
 
   constructor(
@@ -17,6 +18,7 @@ export class FormControlMetadata<T> {
       order?: number;
       controlType?: string;
       type?: string;
+      visible?: boolean;
       dropdownOptions?: { key: string; value: string }[];
     } = {}
   ) {
@@ -27,6 +29,7 @@ export class FormControlMetadata<T> {
     this.order = property.order === undefined ? 1 : property.order;
     this.controlType = property.controlType || '';
     this.type = property.type || '';
+    this.visible = property.visible === undefined ? true : property.visible;
     this.dropdownOptions = property.dropdownOptions || [];
   }
 }
