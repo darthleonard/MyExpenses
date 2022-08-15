@@ -8,6 +8,7 @@ import { ShoppingPageRoutingModule } from './shopping-routing.module';
 
 import { ShoppingPage } from './shopping.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-modal.page';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ShoppingPageRoutingModule,
     ComponentsModule
   ],
-  declarations: [ShoppingPage]
+  declarations: [ShoppingPage, ShoppingListtModalPage]
 })
 export class ShoppingPageModule {}

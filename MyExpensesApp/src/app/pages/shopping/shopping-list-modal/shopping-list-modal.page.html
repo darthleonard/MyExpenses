@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Shopping List</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <app-form
+      [formControlsMetadata]="metadata"
+      [showCancelButton]="true"
+      [entity]="shoppingList"
+      (submit)="onAccept($event)"
+      (cancel)="onCancel()"
+    ></app-form>
+  </ion-content>
+  
