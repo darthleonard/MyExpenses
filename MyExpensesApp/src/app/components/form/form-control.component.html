@@ -2,9 +2,7 @@
   <ion-item>
     <ion-label position="floating" [attr.for]="formControltMetadata.key"
       >{{ formControltMetadata.label }}
-      <ng-container *ngIf="formControltMetadata.required">
-        <small> * </small>
-      </ng-container>
+      <ng-container *ngIf="formControltMetadata.required">*</ng-container>
     </ion-label>
 
     <ng-container [ngSwitch]="formControltMetadata.controlType">
@@ -29,8 +27,8 @@
       </ion-select>
     </ng-container>
 
-    <ng-container class="errorMessage" *ngIf="!isValid">
+    <!-- <ng-container class="errorMessage" *ngIf="!isValid">
       <small>{{ formControltMetadata.label }} is required</small>
-    </ng-container>
+    </ng-container> -->
   </ion-item>
 </ng-container>
