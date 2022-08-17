@@ -6,6 +6,7 @@ export interface Shopping {
   lastModDate: Date;
   effectiveDate: Date;
   name: string;
+  total: number;
   products: {
     id: number,
     name: string,

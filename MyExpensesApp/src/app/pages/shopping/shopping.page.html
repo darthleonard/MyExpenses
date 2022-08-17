@@ -20,7 +20,7 @@
                 <ion-col>
                   <small> Date: {{ shoppingList.effectiveDate | date }} </small>
                 </ion-col>
-                <ion-col class="ion-text-end"> $ Amount </ion-col>
+                <ion-col class="ion-text-end"> {{ shoppingList.total | currency }} </ion-col>
               </ion-row>
             </ion-grid>
           </ion-item>

@@ -9,8 +9,7 @@ import { ProductModalPage } from './product-modal/product-modal.page';
 
 @Component({
   selector: 'app-shopping-list',
-  templateUrl: './shopping-list.page.html',
-  styleUrls: ['./shopping-list.page.scss'],
+  templateUrl: './shopping-list.page.html'
 })
 export class ShoppingListPage implements OnInit {
   constructor(
@@ -67,6 +66,7 @@ export class ShoppingListPage implements OnInit {
           paramsFilter.id = DataUtils.createUUID();
           this.shopping.products.push(paramsFilter);
         }
+        this.shopping.total += paramsFilter.amount;
       }
     });
     await modal.present();
