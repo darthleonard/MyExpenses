@@ -46,6 +46,7 @@ export class ProductMetadataService {
         key: 'quantity',
         label: 'Quantity',
         type: 'number',
+        value: '1',
         order: 5,
       })
     ];
