@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { FormControlMetadata } from './controls/form-control-metadata';
+import { FormPropertyChangedArgs } from './form-property-changed-args';
 import { MetadataControlService } from './metadata-control.service';
 
 @Component({
@@ -18,13 +19,15 @@ export class FormComponent implements OnInit {
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() submit: EventEmitter<any> = new EventEmitter();
+  @Output() propertyChanged: EventEmitter<FormPropertyChangedArgs> =
+    new EventEmitter();
 
   form!: FormGroup;
   payLoad = '';
 
   ngOnInit() {
-    if(this.entity) {
-      this.formControlsMetadata.forEach(m => m.value = this.entity[m.key]);
+    if (this.entity) {
+      this.formControlsMetadata.forEach((m) => (m.value = this.entity[m.key]));
     }
     this.form = this.metadataControlService.toFormGroup(
       this.formControlsMetadata as FormControlMetadata<string>[]
@@ -38,5 +41,18 @@ export class FormComponent implements OnInit {
 
   onCancel() {
     this.cancel.emit();
+  }
+
+  protected onPropertyChanged(args: { name: string; value: any }) {
+    const previousValue = this.entity ? this.entity[args.name] : undefined;
+    if (previousValue === args.value) {
+      return;
+    }
+    this.entity[args.name] = args.value;
+    this.propertyChanged.emit({
+      propertyName: args.name,
+      previousValue: previousValue,
+      currentValue: args.value,
+    });
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
+import { FormPropertyChangedArgs } from 'src/app/components/form/form-property-changed-args';
 import { ProductMetadataService } from './product-metadata.service';
 
 @Component({
@@ -19,15 +20,23 @@ export class ProductModalPage implements OnInit {
   metadata: FormControlMetadata<string>[];
 
   ngOnInit() {
-    this.productMetadataService.getControls().subscribe((m) => (this.metadata = m));
+    this.productMetadataService
+      .getControls()
+      .subscribe((m) => (this.metadata = m));
   }
 
   onAccept(event: any) {
-    const a = this.product;
     this.modalController.dismiss(event);
   }
 
   onCancel() {
     this.modalController.dismiss();
+  }
+
+  onPropertyChanged(args: FormPropertyChangedArgs) {
+    if (['unitPrice'].includes(args.propertyName)) {
+      console.log(args);
+      console.log('update total price');
+    }
   }
 }

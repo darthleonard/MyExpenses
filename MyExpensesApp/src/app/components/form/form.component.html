@@ -5,6 +5,7 @@
         *ngIf="controlMetadata.visible"
         [formControltMetadata]="controlMetadata"
         [form]="form"
+        (propertyChanged)="onPropertyChanged($event)"
       ></app-form-control>
     </div>
 
@@ -16,7 +17,12 @@
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button color="primary" type="submit" [disabled]="!form.valid" expand="block">
+          <ion-button
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid"
+            expand="block"
+          >
             Ok
           </ion-button>
         </ion-col>

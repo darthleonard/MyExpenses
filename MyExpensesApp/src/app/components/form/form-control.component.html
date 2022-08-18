@@ -11,6 +11,8 @@
         [formControlName]="formControltMetadata.key"
         [id]="formControltMetadata.key"
         [type]="formControltMetadata.type"
+        (ionChange)="onChange()"
+        (ionBlur)="onBlur()"
       ></ion-input>
 
       <ion-select
