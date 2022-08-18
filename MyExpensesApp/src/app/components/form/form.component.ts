@@ -11,11 +11,20 @@ import { MetadataControlService } from './metadata-control.service';
   providers: [MetadataControlService],
 })
 export class FormComponent implements OnInit {
+  private _entity: any;
   constructor(private metadataControlService: MetadataControlService) {}
 
   @Input() formControlsMetadata: FormControlMetadata<string>[] | null = [];
   @Input() showCancelButton: boolean;
-  @Input() entity: any;
+  @Input() set entity(entity: any) {
+    this._entity = entity ?? {};
+  }
+  get entity() {
+    if(!this._entity) {
+      this._entity = {};
+    }
+    return this._entity;
+  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() submit: EventEmitter<any> = new EventEmitter();
@@ -26,9 +35,7 @@ export class FormComponent implements OnInit {
   payLoad = '';
 
   ngOnInit() {
-    if (this.entity) {
-      this.formControlsMetadata.forEach((m) => (m.value = this.entity[m.key]));
-    }
+    this.formControlsMetadata.forEach((m) => (m.value = this.entity[m.key]));
     this.form = this.metadataControlService.toFormGroup(
       this.formControlsMetadata as FormControlMetadata<string>[]
     );
