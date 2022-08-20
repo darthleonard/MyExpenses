@@ -10,6 +10,7 @@
         *ngSwitchCase="'textbox'"
         [formControlName]="formControltMetadata.key"
         [id]="formControltMetadata.key"
+        [readonly]="formControltMetadata.readonly"
         [type]="formControltMetadata.type"
         (ionChange)="onChange()"
         (ionBlur)="onBlur()"
