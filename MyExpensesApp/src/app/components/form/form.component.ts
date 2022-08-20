@@ -35,10 +35,7 @@ export class FormComponent implements OnInit {
   payLoad = '';
 
   ngOnInit() {
-    this.formControlsMetadata.forEach((m) => (m.value = this.entity[m.key]));
-    this.form = this.metadataControlService.toFormGroup(
-      this.formControlsMetadata as FormControlMetadata<string>[]
-    );
+    this.updateEntity();
   }
 
   onSubmit() {
@@ -48,6 +45,13 @@ export class FormComponent implements OnInit {
 
   onCancel() {
     this.cancel.emit();
+  }
+
+  updateEntity() {
+    this.formControlsMetadata.forEach((m) => (m.value = this.entity[m.key]));
+    this.form = this.metadataControlService.toFormGroup(
+      this.formControlsMetadata as FormControlMetadata<string>[]
+    );
   }
 
   protected onPropertyChanged(args: { name: string; value: any }) {
