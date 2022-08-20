@@ -28,7 +28,7 @@ export class ShoppingListPage implements OnInit {
   }
 
   onAddClick() {
-    this.openProductModal();
+    this.openProductModal({});
   }
 
   onEditClick(product: any) {
@@ -45,28 +45,28 @@ export class ShoppingListPage implements OnInit {
     this.dataService.saveShoppingLists(this.shopping);
   }
 
-  private async openProductModal(product?: any) {
+  private async openProductModal(selectedProduct: any) {
     const modal = await this.modalController.create({
       component: ProductModalPage,
       componentProps: {
-        product: product,
+        product: selectedProduct,
       },
       backdropDismiss: false,
       cssClass: 'half-modal',
     });
     modal.onDidDismiss().then(async (data) => {
-      const paramsFilter = data?.data;
-      if (paramsFilter) {
-        paramsFilter.amount = Number(paramsFilter.unitPrice) * Number(paramsFilter.quantity);
-        if(paramsFilter.id) {
-          let p = this.shopping.products.find(p => p.id === paramsFilter.id);
+      const product = data?.data;
+      // TODO: hot fix until implementing boolean form control
+      product.onCar = selectedProduct.onCar;
+      if (product) {
+        if(product.id) {
+          let p = this.shopping.products.find(p => p.id === product.id);
           let index = this.shopping.products.indexOf(p);
-          this.shopping.products[index] = paramsFilter;
+          this.shopping.products[index] = product;
         } else {
-          paramsFilter.id = DataUtils.createUUID();
-          this.shopping.products.push(paramsFilter);
+          product.id = DataUtils.createUUID();
+          this.shopping.products.push(product);
         }
-        this.shopping.total += paramsFilter.amount;
       }
     });
     await modal.present();

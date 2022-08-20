@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
 import { FormPropertyChangedArgs } from 'src/app/components/form/form-property-changed-args';
+import { FormComponent } from 'src/app/components/form/form.component';
 import { ProductMetadataService } from './product-metadata.service';
 
 @Component({
@@ -10,6 +11,8 @@ import { ProductMetadataService } from './product-metadata.service';
   providers: [ProductMetadataService],
 })
 export class ProductModalPage implements OnInit {
+  @ViewChild(FormComponent) private form: FormComponent;
+
   constructor(
     private readonly productMetadataService: ProductMetadataService,
     private readonly modalController: ModalController
@@ -25,8 +28,8 @@ export class ProductModalPage implements OnInit {
       .subscribe((m) => (this.metadata = m));
   }
 
-  onAccept(event: any) {
-    this.modalController.dismiss(event);
+  onAccept(product: any) {
+    this.modalController.dismiss(product);
   }
 
   onCancel() {
@@ -34,9 +37,11 @@ export class ProductModalPage implements OnInit {
   }
 
   onPropertyChanged(args: FormPropertyChangedArgs) {
-    if (['unitPrice'].includes(args.propertyName)) {
-      console.log(args);
-      console.log('update total price');
+    if (!['unitPrice', 'quantity'].includes(args.propertyName)) {
+      return;
     }
+    this.form.entity.totalAmount =
+      this.form.entity.unitPrice * this.form.entity.quantity;
+    this.form.updateEntity();
   }
 }

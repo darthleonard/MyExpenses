@@ -18,12 +18,12 @@ export class ProductMetadataService {
         key: 'name',
         label: 'Product Name',
         required: true,
-        order: 1,
+        order: 1
       }),
       new TextboxControl({
         key: 'brand',
         label: 'Brand',
-        order: 2,
+        order: 2
       }),
       new DropdownControl({
         key: 'store',
@@ -34,20 +34,28 @@ export class ProductMetadataService {
           { key: 'oxxo', value: 'Oxxo' },
           { key: 'notset', value: 'Not Set' },
         ],
-        order: 3,
+        order: 3
       }),
       new TextboxControl({
         key: 'unitPrice',
         label: 'Price',
         type: 'number',
-        order: 4,
+        order: 4
       }),
       new TextboxControl({
         key: 'quantity',
         label: 'Quantity',
         type: 'number',
         value: '1',
-        order: 5,
+        order: 5
+      }),
+      new TextboxControl({
+        key: 'totalAmount',
+        label: 'Total',
+        type: 'number',
+        value: '1',
+        readonly: true,
+        order: 6
       })
     ];
 

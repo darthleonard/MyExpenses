@@ -25,7 +25,7 @@ export class ShoppingDataService {
     }
 
     shopping.total = 0;
-    shopping.products.filter(p => p.onCar).forEach(p => shopping.total += p.amount);
+    shopping.products.filter(p => p.onCar).forEach(p => shopping.total += p.totalAmount);
     shopping.lastModDate = new Date();
     await database.shoppingLists.put(shopping);
     await this.showToast('Saved');

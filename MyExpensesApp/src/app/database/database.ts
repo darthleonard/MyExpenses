@@ -14,7 +14,7 @@ export interface Shopping {
     store: string,
     unitPrice: number,
     quantity: number,
-    amount?: number,
+    totalAmount?: number,
     onCar: boolean,
     image?: string
   }[];
