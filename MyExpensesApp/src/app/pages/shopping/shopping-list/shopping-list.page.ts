@@ -9,7 +9,7 @@ import { ProductModalPage } from './product-modal/product-modal.page';
 
 @Component({
   selector: 'app-shopping-list',
-  templateUrl: './shopping-list.page.html'
+  templateUrl: './shopping-list.page.html',
 })
 export class ShoppingListPage implements OnInit {
   constructor(
@@ -19,11 +19,17 @@ export class ShoppingListPage implements OnInit {
   ) {}
 
   shopping: Shopping;
+  totalOnCar: number;
+  totalExpected: number;
 
   ngOnInit() {
     this.route.params.subscribe(async (p) => {
       this.shopping = await this.dataService.getShoppingList(Number(p['id']));
-      if (!this.shopping.products) this.shopping.products = [];
+      this.totalOnCar = 0;
+      if (!this.shopping.products) {
+        this.shopping.products = [];
+      }
+      this.updateTotal();
     });
   }
 
@@ -45,6 +51,15 @@ export class ShoppingListPage implements OnInit {
     this.dataService.saveShoppingLists(this.shopping);
   }
 
+  updateTotal() {
+    this.totalOnCar = 0;
+    this.totalExpected = 0;
+    this.shopping.products
+      .filter((p) => p.onCar)
+      .forEach((p) => (this.totalOnCar += p.totalAmount));
+    this.shopping.products.forEach((p) => (this.totalExpected += p.totalAmount));
+  }
+
   private async openProductModal(selectedProduct: any) {
     const modal = await this.modalController.create({
       component: ProductModalPage,
@@ -59,8 +74,8 @@ export class ShoppingListPage implements OnInit {
       // TODO: hot fix until implementing boolean form control
       product.onCar = selectedProduct.onCar;
       if (product) {
-        if(product.id) {
-          let p = this.shopping.products.find(p => p.id === product.id);
+        if (product.id) {
+          let p = this.shopping.products.find((p) => p.id === product.id);
           let index = this.shopping.products.indexOf(p);
           this.shopping.products[index] = product;
         } else {
@@ -68,6 +83,7 @@ export class ShoppingListPage implements OnInit {
           this.shopping.products.push(product);
         }
       }
+      this.updateTotal();
     });
     await modal.present();
   }
