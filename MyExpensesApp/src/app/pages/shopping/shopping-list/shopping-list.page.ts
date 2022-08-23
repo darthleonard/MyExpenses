@@ -30,7 +30,7 @@ export class ShoppingListPage implements OnInit {
   }
 
   onAddClick() {
-    this.openProductModal({quantity: 1});
+    this.openProductModal({});
   }
 
   onEditClick(product: any) {

@@ -53,7 +53,6 @@ export class ProductMetadataService {
         key: 'totalAmount',
         label: 'Total',
         type: 'number',
-        value: '1',
         readonly: true,
         order: 6
       })

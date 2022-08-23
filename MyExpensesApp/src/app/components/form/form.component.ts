@@ -20,7 +20,7 @@ export class FormComponent implements OnInit {
     this._entity = entity ?? {};
   }
   get entity() {
-    if(!this._entity) {
+    if (!this._entity) {
       this._entity = {};
     }
     return this._entity;
@@ -48,7 +48,13 @@ export class FormComponent implements OnInit {
   }
 
   updateEntity() {
-    this.formControlsMetadata.forEach((m) => (m.value = this.entity[m.key]));
+    this.formControlsMetadata.forEach((m) => {
+      if (this.entity[m.key]) {
+        m.value = this.entity[m.key];
+      } else {
+        this.entity[m.key] = m.value;
+      }
+    });
     this.form = this.metadataControlService.toFormGroup(
       this.formControlsMetadata as FormControlMetadata<string>[]
     );
