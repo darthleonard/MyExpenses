@@ -53,7 +53,9 @@ export class ShoppingListPage implements OnInit {
     this.shopping.products
       .filter((p) => p.onCar)
       .forEach((p) => (this.totalOnCar += p.totalAmount));
-    this.shopping.products.forEach((p) => (this.totalExpected += p.totalAmount));
+    this.shopping.products.forEach(
+      (p) => (this.totalExpected += p.totalAmount)
+    );
   }
 
   private async openProductModal(selectedProduct: any) {
@@ -66,18 +68,19 @@ export class ShoppingListPage implements OnInit {
       cssClass: 'half-modal',
     });
     modal.onDidDismiss().then(async (data) => {
+      if (!data?.data) {
+        return;
+      }
       const product = data?.data;
       // TODO: hot fix until implementing boolean form control
       product.onCar = selectedProduct.onCar;
-      if (product) {
-        if (product.id) {
-          let p = this.shopping.products.find((p) => p.id === product.id);
-          let index = this.shopping.products.indexOf(p);
-          this.shopping.products[index] = product;
-        } else {
-          product.id = DataUtils.createUUID();
-          this.shopping.products.push(product);
-        }
+      if (product.id) {
+        let p = this.shopping.products.find((p) => p.id === product.id);
+        let index = this.shopping.products.indexOf(p);
+        this.shopping.products[index] = product;
+      } else {
+        product.id = DataUtils.createUUID();
+        this.shopping.products.push(product);
       }
       this.updateTotal();
     });
