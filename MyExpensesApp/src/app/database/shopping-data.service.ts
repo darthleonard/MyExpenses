@@ -21,6 +21,7 @@ export class ShoppingDataService {
   async saveShoppingLists(shopping: Shopping) {
     if (!shopping.hasOwnProperty('id') || !shopping.id) {
       shopping.creationDate = new Date();
+      shopping.products = [];
       shopping.total = 0;
     }
 

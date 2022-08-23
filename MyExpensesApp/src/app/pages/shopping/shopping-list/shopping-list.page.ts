@@ -25,10 +25,6 @@ export class ShoppingListPage implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(async (p) => {
       this.shopping = await this.dataService.getShoppingList(Number(p['id']));
-      this.totalOnCar = 0;
-      if (!this.shopping.products) {
-        this.shopping.products = [];
-      }
       this.updateTotal();
     });
   }
