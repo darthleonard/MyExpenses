@@ -20,18 +20,18 @@ export class ProductMetadataService {
         required: true,
         order: 1
       }),
-      new TextboxControl({
-        key: 'brand',
-        label: 'Brand',
-        order: 2
-      }),
+      // new TextboxControl({
+      //   key: 'brand',
+      //   label: 'Brand',
+      //   order: 2
+      // }),
       new DropdownControl({
         key: 'store',
         label: 'Store',
         dropdownOptions: [
           { key: 'chedraui', value: 'Chedrahui' },
-          { key: 'ahorrera', value: 'Ahorrera' },
           { key: 'oxxo', value: 'Oxxo' },
+          { key: 'otro', value: 'Otro' },
           { key: 'notset', value: 'Not Set' },
         ],
         order: 3

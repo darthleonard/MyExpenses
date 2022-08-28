@@ -10,6 +10,8 @@ import { FormComponent } from './form/form.component';
 import { HeaderComponent } from './header/header.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { RouterModule } from '@angular/router';
+import { SelectModalComponent } from './controls/select-modal/select-modal.component';
+import { SearchFilterPipe } from './controls/select-modal/search-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -17,13 +19,16 @@ import { RouterModule } from '@angular/router';
     FormControlComponent,
     FormComponent,
     HeaderComponent,
-    MainMenuComponent
+    MainMenuComponent,
+    SelectModalComponent,
+    SearchFilterPipe
   ],
   exports:[
     FuelItemComponent,
     FormComponent,
     HeaderComponent,
-    MainMenuComponent
+    MainMenuComponent,
+    SelectModalComponent
   ],
   imports: [
     CommonModule,
