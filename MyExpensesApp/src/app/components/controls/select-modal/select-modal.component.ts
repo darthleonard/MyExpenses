@@ -8,36 +8,41 @@ import { FormControlComponent } from '../../form/form-control.component';
   selector: 'app-select-modal',
   templateUrl: './select-modal.component.html',
 })
-export class SelectModalComponent extends FormControlComponent{
+export class SelectModalComponent extends FormControlComponent {
   @ViewChild(IonModal) modal: IonModal;
 
-  name: string;
+  @Input() dataSource: any[];
+
   filter: string;
-  dataSource: any[] = [
-    { key: 'chedraui', name: 'Chedrahui' },
-    { key: 'oxxo', name: 'Oxxo' },
-    { key: 'otro', name: 'Otro' },
-    { key: 'notset', name: 'Not Set' }
-  ];
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
   }
 
   confirm() {
-    this.modal.dismiss(this.name, 'confirm');
-    this.name = this.filter;
-    this.form.controls[this.formControltMetadata.key].setValue(this.filter);
+    const existingItem = this.dataSource.find(
+      (item) => item.value.toLowerCase() === this.filter.toLocaleLowerCase()
+    );
+    let value;
+    if (existingItem) {
+      value = existingItem.value;
+    } else {
+      // TODO: add this.dilter to dataSource origin(table/service)
+      value = this.filter;
+    }
+    this.setValueAndClose(value);
   }
 
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      
-    }
+  onSelect(data: any) {
+    this.setValueAndClose(data.value);
   }
 
   onSearchChange(event) {
     this.filter = event.detail.value;
+  }
+
+  private setValueAndClose(value: any) {
+    this.form.controls[this.formControltMetadata.key].setValue(value);
+    this.modal.dismiss(null, 'confirm');
   }
 }

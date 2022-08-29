@@ -9,6 +9,7 @@
           *ngSwitchCase="'lookup'"
           [formControltMetadata]="controlMetadata"
           [form]="form"
+          [dataSource]="controlMetadata.dropdownOptions"
           (propertyChanged)="onPropertyChanged($event)"
         ></app-select-modal>
         <app-form-control

@@ -6,10 +6,10 @@
     </ion-label>
     <ion-input
       [formControlName]="formControltMetadata.key"
-      id="id"
+      [id]="formControltMetadata.key"
     ></ion-input>
 
-    <ion-modal trigger="id" (willDismiss)="onWillDismiss($event)">
+    <ion-modal [trigger]="formControltMetadata.key">
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -22,14 +22,15 @@
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding">
+        <ion-content>
           <ion-searchbar
-            [debounce]="250"
+            [debounce]="150"
             (ionChange)="onSearchChange($event)"
+            [value]="form.controls[this.formControltMetadata.key].value"
           ></ion-searchbar>
           <ion-list>
-            <ion-item *ngFor="let data of dataSource | searchFilter: filter">
-              <ion-label> {{ data.name }} </ion-label>
+            <ion-item *ngFor="let data of dataSource | searchFilter: filter" (click)="onSelect(data)">
+              <ion-label> {{ data.value }} </ion-label>
             </ion-item>
           </ion-list>
         </ion-content>
