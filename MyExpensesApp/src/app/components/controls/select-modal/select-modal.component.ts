@@ -23,10 +23,6 @@ export class SelectModalComponent
 
   ngOnInit(): void {
     this.selectModalDataService.tableName = this.formControltMetadata.endpoint;
-    // this.selectModalDataService
-    //   .getEntities()
-    //   .subscribe((d) => (this.dataSource = d));
-
     this.selectModalDataService
       .getEntities()
       .then((d) => (this.dataSource = d));

@@ -1,6 +1,5 @@
 import { ToastController } from '@ionic/angular';
 import { database } from './database';
-import { liveQuery } from 'dexie';
 
 export abstract class DataServiceBase {
   constructor(public toastController: ToastController) {}
@@ -8,9 +7,7 @@ export abstract class DataServiceBase {
   abstract tableName: string;
 
   getEntities() {
-    // TODO: check if liveQuery is necesary
     const table = this.getTable();
-    //return liveQuery(() => database.storeList.toArray());
     return table.toArray();
   }
 
