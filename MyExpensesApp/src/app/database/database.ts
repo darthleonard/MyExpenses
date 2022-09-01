@@ -20,13 +20,22 @@ export interface Shopping {
   }[];
 }
 
+export interface Store {
+  id: number;
+  creationDate: Date;
+  lastModDate: Date;
+  name: string;
+}
+
 export class AppDatabase extends Dexie {
   shoppingLists: Table<Shopping, number>;
+  storeList: Table<Store, number>
 
   constructor() {
     super('MyExpensesApp');
     this.version(1).stores({
-      shoppingLists: '++id'
+      shoppingLists: '++id',
+      storeList: '++id'
     });
   }
 }

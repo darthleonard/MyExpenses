@@ -18,19 +18,34 @@
             </ion-buttons>
             <ion-title> TITLE </ion-title>
             <ion-buttons slot="end">
-              <ion-button (click)="confirm()" [strong]="true"> OK </ion-button>
+              <ion-button
+                [disabled]="!filter?.length"
+                (click)="confirm()"
+                [strong]="true"
+              >
+                OK
+              </ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content>
           <ion-searchbar
+            [disabled]="!dataSource"
             [debounce]="150"
             (ionChange)="onSearchChange($event)"
             [value]="form.controls[this.formControltMetadata.key].value"
           ></ion-searchbar>
-          <ion-list>
-            <ion-item *ngFor="let data of dataSource | searchFilter: filter" (click)="onSelect(data)">
-              <ion-label> {{ data.value }} </ion-label>
+          <ion-list *ngIf="dataSource">
+            <ion-item
+              *ngFor="let data of dataSource | searchFilter: filter"
+              (click)="onSelect(data)"
+            >
+              <ion-label> {{ data.name }} </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-list *ngIf="!dataSource">
+            <ion-item *ngFor="let data of [].constructor(4)">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
             </ion-item>
           </ion-list>
         </ion-content>

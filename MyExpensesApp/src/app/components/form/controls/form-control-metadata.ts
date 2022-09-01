@@ -9,6 +9,7 @@ export class FormControlMetadata<T> {
   visible: boolean;
   readonly: boolean;
   dropdownOptions: { key: string; value: string }[];
+  endpoint: string;
 
   constructor(
     property: {
@@ -22,6 +23,7 @@ export class FormControlMetadata<T> {
       visible?: boolean;
       readonly?: boolean;
       dropdownOptions?: { key: string; value: string }[];
+      endpoint?: string;
     } = {}
   ) {
     this.value = property.value;
@@ -34,5 +36,6 @@ export class FormControlMetadata<T> {
     this.visible = property.visible === undefined ? true : property.visible;
     this.readonly = property.readonly === undefined ? false : property.readonly;
     this.dropdownOptions = property.dropdownOptions || [];
+    this.endpoint = property.endpoint;
   }
 }

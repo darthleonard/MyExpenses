@@ -1,20 +1,63 @@
-import { ToastController } from "@ionic/angular";
+import { ToastController } from '@ionic/angular';
+import { database } from './database';
+import { liveQuery } from 'dexie';
 
-// not used
 export abstract class DataServiceBase {
-  constructor(public toastController: ToastController) {
+  constructor(public toastController: ToastController) {}
+
+  abstract tableName: string;
+
+  getEntities() {
+    // TODO: check if liveQuery is necesary
+    const table = this.getTable();
+    //return liveQuery(() => database.storeList.toArray());
+    return table.toArray();
   }
 
-  protected createUUID() {
-    let dt = new Date().getTime();
-    let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        let r = (dt + Math.random() * 16) % 16 | 0;
-        dt = Math.floor(dt / 16);
-        return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
-      }
-    );
-    return uuid;
+  async getEntity(id: number) {
+    const table = this.getTable();
+    return await table.get(id);
+  }
+
+  async saveEntity(entity: any) {
+    const table = this.getTable();
+    if (!entity.hasOwnProperty('id') || !entity.id) {
+      entity.creationDate = new Date();
+      this.onCreateEntity(entity);
+    }
+
+    entity.lastModDate = new Date();
+    this.beforeSave(entity);
+    entity = await table.put(entity);
+    await this.showToast(`${this.tableName} saved`);
+    return entity;
+  }
+
+  async delete(entity: any) {
+    const table = this.getTable();
+    table.delete(entity).then((r) => console.log(r));
+    await this.showToast(`${this.tableName} deleted`);
+  }
+
+  onCreateEntity(entity: any) {}
+
+  beforeSave(entity: any) {}
+
+  // TODO: there should be a better way to validate if table exists
+  private getTable() {
+    const table = database.tables.find((t) => t.name === this.tableName);
+    if (!table) {
+      throw { message: `table ${this.tableName} does not exist` };
+    }
+    return table;
+  }
+
+  private async showToast(message: string) {
+    (
+      await this.toastController.create({
+        message: message,
+        duration: 2000,
+      })
+    ).present();
   }
 }

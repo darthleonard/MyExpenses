@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { DropdownControl } from 'src/app/components/form/controls/dropdown-control';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
+import { LookupControl } from 'src/app/components/form/controls/lookup-control';
 import { TextboxControl } from 'src/app/components/form/controls/textbox-control';
 
 @Injectable()
@@ -25,17 +26,24 @@ export class ProductMetadataService {
       //   label: 'Brand',
       //   order: 2
       // }),
-      new DropdownControl({
+      new LookupControl({
         key: 'store',
         label: 'Store',
-        dropdownOptions: [
-          { key: 'chedraui', value: 'Chedrahui' },
-          { key: 'oxxo', value: 'Oxxo' },
-          { key: 'otro', value: 'Otro' },
-          { key: 'notset', value: 'Not Set' },
-        ],
+        endpoint: 'storeList',
         order: 3
       }),
+      // keep this as a example, may be this DropdownControl will be eliminated
+      // new DropdownControl({
+      //   key: 'store',
+      //   label: 'Store',
+      //   dropdownOptions: [
+      //     { key: 'chedraui', value: 'Chedrahui' },
+      //     { key: 'oxxo', value: 'Oxxo' },
+      //     { key: 'otro', value: 'Otro' },
+      //     { key: 'notset', value: 'Not Set' },
+      //   ],
+      //   order: 3
+      // }),
       new TextboxControl({
         key: 'unitPrice',
         label: 'Price',

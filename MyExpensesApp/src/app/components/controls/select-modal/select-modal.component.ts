@@ -1,40 +1,58 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core/components';
+import { SelectModalDataService } from 'src/app/database/select-modal-data.service';
 import { FormControlComponent } from '../../form/form-control.component';
 
 @Component({
   selector: 'app-select-modal',
   templateUrl: './select-modal.component.html',
+  providers: [SelectModalDataService],
 })
-export class SelectModalComponent extends FormControlComponent {
+export class SelectModalComponent
+  extends FormControlComponent
+  implements OnInit
+{
   @ViewChild(IonModal) modal: IonModal;
 
-  @Input() dataSource: any[];
+  constructor(private readonly selectModalDataService: SelectModalDataService) {
+    super();
+  }
 
+  dataSource: any[];
   filter: string;
+
+  ngOnInit(): void {
+    this.selectModalDataService.tableName = this.formControltMetadata.endpoint;
+    // this.selectModalDataService
+    //   .getEntities()
+    //   .subscribe((d) => (this.dataSource = d));
+
+    this.selectModalDataService
+      .getEntities()
+      .then((d) => (this.dataSource = d));
+  }
 
   cancel() {
     this.modal.dismiss(null, 'cancel');
   }
 
-  confirm() {
+  async confirm() {
     const existingItem = this.dataSource.find(
-      (item) => item.value.toLowerCase() === this.filter.toLocaleLowerCase()
+      (item) => item.name.toLowerCase() === this.filter.toLocaleLowerCase()
     );
     let value;
     if (existingItem) {
-      value = existingItem.value;
+      value = existingItem.name;
     } else {
       // TODO: add this.dilter to dataSource origin(table/service)
       value = this.filter;
+      const aux = await this.selectModalDataService.saveEntity({ name: value });
     }
     this.setValueAndClose(value);
   }
 
   onSelect(data: any) {
-    this.setValueAndClose(data.value);
+    this.setValueAndClose(data.name);
   }
 
   onSearchChange(event) {
