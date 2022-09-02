@@ -47,8 +47,9 @@ export class SelectModalComponent
     if (existingItem) {
       value = existingItem.name;
     } else {
-      value = this.filter;
-      const aux = await this.selectModalDataService.saveEntity({ name: value });
+      value = await this.selectModalDataService.saveEntity({
+        name: this.filter,
+      });
     }
     this.setValueAndClose(value);
   }
