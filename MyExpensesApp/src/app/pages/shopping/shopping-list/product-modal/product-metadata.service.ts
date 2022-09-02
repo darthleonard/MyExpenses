@@ -15,10 +15,11 @@ export class ProductMetadataService {
         key: 'id',
         visible: false
       }),
-      new TextboxControl({
+      new LookupControl({
         key: 'name',
         label: 'Product Name',
         required: true,
+        endpoint: 'products',
         order: 1
       }),
       // new TextboxControl({

@@ -21,12 +21,12 @@ export class ShoppingDataService {
   async saveShoppingLists(shopping: Shopping) {
     if (!shopping.hasOwnProperty('id') || !shopping.id) {
       shopping.creationDate = new Date();
-      shopping.products = [];
+      shopping.productsDetail = [];
       shopping.total = 0;
     }
 
     shopping.total = 0;
-    shopping.products.filter(p => p.onCar).forEach(p => shopping.total += p.totalAmount);
+    shopping.productsDetail.filter(p => p.onCar).forEach(p => shopping.total += p.totalAmount);
     shopping.lastModDate = new Date();
     await database.shoppingLists.put(shopping);
     await this.showToast('Saved');

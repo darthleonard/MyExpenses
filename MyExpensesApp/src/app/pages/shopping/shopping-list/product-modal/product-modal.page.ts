@@ -37,11 +37,10 @@ export class ProductModalPage implements OnInit {
   }
 
   onPropertyChanged(args: FormPropertyChangedArgs) {
-    if (!['unitPrice', 'quantity'].includes(args.propertyName)) {
-      return;
+    if (['unitPrice', 'quantity'].includes(args.propertyName)) {
+      this.form.entity.totalAmount =
+        this.form.entity.unitPrice * this.form.entity.quantity;
+      this.form.updateEntity();
     }
-    this.form.entity.totalAmount =
-      this.form.entity.unitPrice * this.form.entity.quantity;
-    this.form.updateEntity();
   }
 }

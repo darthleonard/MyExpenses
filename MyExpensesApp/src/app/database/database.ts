@@ -7,7 +7,7 @@ export interface Shopping {
   effectiveDate: Date;
   name: string;
   total: number;
-  products: {
+  productsDetail: {
     id: number,
     name: string,
     brand: string,
@@ -20,6 +20,13 @@ export interface Shopping {
   }[];
 }
 
+export interface Product {
+  id: number;
+  name: string;
+  brand: string;
+  image?: string;
+}
+
 export interface Store {
   id: number;
   creationDate: Date;
@@ -29,13 +36,15 @@ export interface Store {
 
 export class AppDatabase extends Dexie {
   shoppingLists: Table<Shopping, number>;
-  storeList: Table<Store, number>
+  products: Table<Shopping, number>;
+  storeList: Table<Store, number>;
 
   constructor() {
     super('MyExpensesApp');
     this.version(1).stores({
       shoppingLists: '++id',
-      storeList: '++id'
+      products: '++id',
+      storeList: '++id',
     });
   }
 }

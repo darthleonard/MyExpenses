@@ -25,7 +25,7 @@ export abstract class DataServiceBase {
 
     entity.lastModDate = new Date();
     this.beforeSave(entity);
-    entity = await table.put(entity);
+    entity.id = await table.put(entity);
     await this.showToast(`${this.tableName} saved`);
     return entity;
   }

@@ -51,7 +51,7 @@ export class SelectModalComponent
         name: this.filter,
       });
     }
-    this.setValueAndClose(value);
+    this.setValueAndClose(value.name);
   }
 
   onSelect(data: any) {
