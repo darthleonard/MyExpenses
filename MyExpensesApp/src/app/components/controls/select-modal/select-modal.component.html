@@ -9,7 +9,11 @@
       [id]="formControltMetadata.key"
     ></ion-input>
 
-    <ion-modal [trigger]="formControltMetadata.key">
+    <ion-modal
+      [trigger]="formControltMetadata.key"
+      (willPresent)="willPresent()"
+      (willDismiss)="willDismiss()"
+    >
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -35,6 +39,13 @@
             (ionChange)="onSearchChange($event)"
             [value]="form.controls[this.formControltMetadata.key].value"
           ></ion-searchbar>
+          <ng-container *ngIf="dataSource && !dataSource.length">
+            <ion-content class="ion-padding ion-text-center">
+              <ion-label>No records found</ion-label>
+              <ion-img src="assets/empty-folder.png"></ion-img>
+            </ion-content>
+          </ng-container>
+
           <ion-list *ngIf="dataSource">
             <ion-item
               *ngFor="let data of dataSource | searchFilter: filter"

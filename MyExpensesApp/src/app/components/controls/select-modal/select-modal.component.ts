@@ -23,9 +23,16 @@ export class SelectModalComponent
 
   ngOnInit(): void {
     this.selectModalDataService.tableName = this.formControltMetadata.endpoint;
+  }
+
+  willPresent() {
     this.selectModalDataService
       .getEntities()
       .then((d) => (this.dataSource = d));
+  }
+
+  willDismiss() {
+    this.dataSource = undefined;
   }
 
   cancel() {
@@ -40,7 +47,6 @@ export class SelectModalComponent
     if (existingItem) {
       value = existingItem.name;
     } else {
-      // TODO: add this.dilter to dataSource origin(table/service)
       value = this.filter;
       const aux = await this.selectModalDataService.saveEntity({ name: value });
     }
