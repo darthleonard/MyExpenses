@@ -18,14 +18,20 @@ export class FormControlComponent {
     return this.form.controls[this.formControltMetadata.key].valid;
   }
 
+  // to detect changes while typing or assigning the whole value
   onChange() {
-    // it will be good emit something? (filter an autocomplete or something)
+    this.emitPropertyChanged();
   }
 
+  // to detect changes until input lost focus, used on normal inputs
   onBlur() {
     if (this.form.controls[this.formControltMetadata.key].pristine) {
       return;
     }
+    this.emitPropertyChanged();
+  }
+
+  private emitPropertyChanged() {
     this.propertyChanged.emit({
       name: this.formControltMetadata.key,
       value: this.form.controls[this.formControltMetadata.key].value,
