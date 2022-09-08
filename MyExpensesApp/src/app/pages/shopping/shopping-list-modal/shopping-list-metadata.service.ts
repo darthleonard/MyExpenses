@@ -10,6 +10,10 @@ export class ShoppingListMetadataService {
   getControls() {
     const controlMetadata: FormControlMetadata<string>[] = [
       new TextboxControl({
+        key: 'id',
+        visible: false
+      }),
+      new TextboxControl({
         key: 'name',
         label: 'List Name',
         required: true,

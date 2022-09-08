@@ -23,18 +23,18 @@ export class ShoppingPage implements OnInit {
   }
 
   async onAddClick() {
-    await this.openProductModal();
+    await this.openShoppingListtModal();
   }
 
   async onEditClick(item: Shopping) {
-    await this.openProductModal(item);
+    await this.openShoppingListtModal(item);
   }
 
   async onDeleteClick(item: Shopping) {
     this.dataService.delete(item);
   }
 
-  private async openProductModal(shoppingList?: any) {
+  private async openShoppingListtModal(shoppingList?: any) {
     const modal = await this.modalController.create({
       component: ShoppingListtModalPage,
       componentProps: {
