@@ -12,6 +12,7 @@ import { MainMenuComponent } from './main-menu/main-menu.component';
 import { RouterModule } from '@angular/router';
 import { SelectModalComponent } from './controls/select-modal/select-modal.component';
 import { SearchFilterPipe } from './controls/select-modal/search-filter.pipe';
+import { DateControlComponent } from './controls/date-control/date-control.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SearchFilterPipe } from './controls/select-modal/search-filter.pipe';
     HeaderComponent,
     MainMenuComponent,
     SelectModalComponent,
+    DateControlComponent,
     SearchFilterPipe
   ],
   exports:[
@@ -28,7 +30,8 @@ import { SearchFilterPipe } from './controls/select-modal/search-filter.pipe';
     FormComponent,
     HeaderComponent,
     MainMenuComponent,
-    SelectModalComponent
+    SelectModalComponent,
+    DateControlComponent
   ],
   imports: [
     CommonModule,

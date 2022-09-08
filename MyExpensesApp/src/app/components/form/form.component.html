@@ -5,6 +5,13 @@
         *ngIf="controlMetadata.visible"
         [ngSwitch]="controlMetadata.controlType"
       >
+        <app-date-control
+          *ngSwitchCase="'date'"
+          [formControltMetadata]="controlMetadata"
+          [form]="form"
+          (propertyChanged)="onPropertyChanged($event)"
+        >
+        </app-date-control>
         <app-select-modal
           *ngSwitchCase="'lookup'"
           [formControltMetadata]="controlMetadata"
