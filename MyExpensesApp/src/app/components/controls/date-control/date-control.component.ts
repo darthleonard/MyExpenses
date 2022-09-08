@@ -17,7 +17,7 @@ export class DateControlComponent
   selectedDate: any;
 
   ngOnInit(): void {
-    const datePipe = new DatePipe('es-US');
+    const datePipe = new DatePipe('en-US');
     this.selectedDate = datePipe.transform(
       this.form.controls[this.formControltMetadata.key].value,
       'MMMM d, y'
