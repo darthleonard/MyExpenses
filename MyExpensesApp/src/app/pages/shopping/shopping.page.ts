@@ -6,7 +6,7 @@ import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-moda
 
 @Component({
   selector: 'app-shopping',
-  templateUrl: './shopping.page.html'
+  templateUrl: './shopping.page.html',
 })
 export class ShoppingPage implements OnInit {
   constructor(
@@ -17,9 +17,7 @@ export class ShoppingPage implements OnInit {
   shoppingLists: Shopping[] = [];
 
   ngOnInit() {
-    this.dataService
-      .getShoppingLists()
-      .subscribe((r) => (this.shoppingLists = r));
+    this.dataService.getEntities().then((e) => (this.shoppingLists = e));
   }
 
   async onAddClick() {
@@ -43,16 +41,13 @@ export class ShoppingPage implements OnInit {
       backdropDismiss: false,
       cssClass: 'half-modal',
     });
-    modal.onDidDismiss().then(async (data) => {
-      const paramsFilter = data?.data;
-      if (paramsFilter) {
-        if(paramsFilter.id) {
-          let p = this.shoppingLists.find(p => p.id === paramsFilter.id);
-          let index = this.shoppingLists.indexOf(p);
-          this.shoppingLists[index] = paramsFilter;
-        }
-        await this.dataService.saveShoppingLists(paramsFilter);
+    modal.onDidDismiss().then(async (listData) => {
+      if (listData.role === 'cancel') {
+        return;
       }
+
+      shoppingList = await this.dataService.saveEntity(listData.data);
+      this.shoppingLists.push(shoppingList);
     });
     await modal.present();
   }

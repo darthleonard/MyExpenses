@@ -24,7 +24,7 @@ export class ShoppingListPage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(async (p) => {
-      this.shopping = await this.dataService.getShoppingList(Number(p['id']));
+      this.shopping = await this.dataService.getEntity(Number(p['id']));
       this.updateTotal();
     });
   }
@@ -44,7 +44,7 @@ export class ShoppingListPage implements OnInit {
   }
 
   onSaveList() {
-    this.dataService.saveShoppingLists(this.shopping);
+    this.dataService.saveEntity(this.shopping);
   }
 
   updateTotal() {
@@ -79,7 +79,6 @@ export class ShoppingListPage implements OnInit {
         let index = this.shopping.productsDetail.indexOf(p);
         this.shopping.productsDetail[index] = productDetail;
       } else {
-        productDetail.id = DataUtils.createUUID();
         this.shopping.productsDetail.push(productDetail);
       }
       this.updateTotal();
