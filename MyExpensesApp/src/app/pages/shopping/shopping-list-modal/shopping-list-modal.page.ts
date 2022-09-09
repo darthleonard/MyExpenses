@@ -24,11 +24,11 @@ export class ShoppingListtModalPage implements OnInit {
       .subscribe((m) => (this.metadata = m));
   }
 
-  onAccept(event: any) {
-    this.modalController.dismiss(event);
+  onAccept(list: any) {
+    this.modalController.dismiss(list, 'accept');
   }
 
   onCancel() {
-    this.modalController.dismiss();
+    this.modalController.dismiss(null, 'cancel');
   }
 }
