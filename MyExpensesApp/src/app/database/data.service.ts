@@ -19,6 +19,7 @@ export abstract class DataServiceBase {
   async saveEntity(entity: any) {
     const table = this.getTable();
     if (!entity.hasOwnProperty('id') || !entity.id) {
+      entity.id = undefined;
       entity.creationDate = new Date();
       this.onCreateEntity(entity);
     }
