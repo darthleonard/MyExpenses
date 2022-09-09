@@ -23,7 +23,7 @@ export class ShoppingListMetadataService {
       new DateControl({
         key: 'effectiveDate',
         label: 'Date',
-        value: new DatePipe('en-US').transform(new Date(), 'MMMM d, y'),
+        value: new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd'),
         order: 2
       }),
     ];
