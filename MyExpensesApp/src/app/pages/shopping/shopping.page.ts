@@ -20,6 +20,13 @@ export class ShoppingPage implements OnInit {
     this.dataService.getEntities().then((e) => (this.shoppingLists = e));
   }
 
+  doRefresh(event: any) {
+    this.dataService.getEntities().then((e) => {
+      this.shoppingLists = e;
+      event.target.complete();
+    });
+  }
+
   async onAddClick() {
     await this.openShoppingListtModal();
   }

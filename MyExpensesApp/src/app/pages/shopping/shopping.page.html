@@ -1,6 +1,9 @@
 <app-header title="Shopping"></app-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ng-container *ngIf="!shoppingLists.length; else shoppingListContainer">
     <ion-content class="ion-padding ion-text-center">
       <ion-label>No records found</ion-label>
