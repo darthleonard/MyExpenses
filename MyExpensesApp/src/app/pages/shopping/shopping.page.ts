@@ -46,8 +46,14 @@ export class ShoppingPage implements OnInit {
         return;
       }
 
-      shoppingList = await this.dataService.saveEntity(listData.data);
-      this.shoppingLists.push(shoppingList);
+      if(shoppingList?.id) {
+        shoppingList.name = listData.data.name;
+        shoppingList.effectiveDate = listData.data.effectiveDate;
+        shoppingList = await this.dataService.saveEntity(shoppingList);
+      } else {
+        shoppingList = await this.dataService.saveEntity(listData.data);
+        this.shoppingLists.push(shoppingList);
+      }
     });
     await modal.present();
   }
