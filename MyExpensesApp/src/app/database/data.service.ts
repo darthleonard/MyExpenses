@@ -55,6 +55,7 @@ export abstract class DataServiceBase {
       await this.toastController.create({
         message: message,
         duration: 2000,
+        color: 'success'
       })
     ).present();
   }
