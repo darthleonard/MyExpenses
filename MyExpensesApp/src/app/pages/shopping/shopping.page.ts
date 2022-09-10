@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonList, ModalController } from '@ionic/angular';
 import { Shopping } from 'src/app/database/database';
 import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-modal.page';
@@ -9,6 +9,8 @@ import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-moda
   templateUrl: './shopping.page.html',
 })
 export class ShoppingPage implements OnInit {
+  @ViewChild(IonList) ionList: IonList;
+
   constructor(
     private readonly dataService: ShoppingDataService,
     private readonly modalController: ModalController
@@ -33,6 +35,7 @@ export class ShoppingPage implements OnInit {
 
   async onEditClick(item: Shopping) {
     await this.openShoppingListtModal(item);
+    this.ionList.closeSlidingItems();
   }
 
   async onDeleteClick(item: Shopping) {
