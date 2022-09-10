@@ -29,6 +29,7 @@ export class ShoppingPage implements OnInit {
   }
 
   async onDeleteClick(item: Shopping) {
+    this.shoppingLists = this.shoppingLists.filter(i => i.id !== item.id);
     this.dataService.delete(item);
   }
 

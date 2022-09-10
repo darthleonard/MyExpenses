@@ -33,7 +33,7 @@ export abstract class DataServiceBase {
 
   async delete(entity: any) {
     const table = this.getTable();
-    table.delete(entity).then((r) => console.log(r));
+    await table.delete(entity.id);
     await this.showToast(`${this.tableName} deleted`);
   }
 
