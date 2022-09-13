@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Product Modal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-form
+    [formControlsMetadata]="metadata"
+    [showCancelButton]="true"
+    [entity]="product"
+    (submit)="onAccept($event)"
+    (cancel)="onCancel()"
+    (propertyChanged)="onPropertyChanged($event)"
+  ></app-form>
+</ion-content>
