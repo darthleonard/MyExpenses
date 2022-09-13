@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'shopping',
-    loadChildren: () => import('./pages/shopping/shopping.module').then( m => m.ShoppingPageModule)
+    loadChildren: () => import('./pages/shopping-shell/shopping-shell.module').then( m => m.ShoppingShellPageModule)
   },
   {
     path: 'house',
