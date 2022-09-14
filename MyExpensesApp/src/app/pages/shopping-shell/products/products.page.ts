@@ -8,7 +8,7 @@ import { ProductModalPage } from './product-modal.page';
   selector: 'app-products',
   templateUrl: './products.page.html',
 })
-export class ProductsPage implements OnInit {
+export class ProductsPage {
   constructor(
     private readonly dataService: ProductsDataService,
     private readonly modalController: ModalController
@@ -16,7 +16,7 @@ export class ProductsPage implements OnInit {
 
   products: Product[] = [];
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.dataService.getEntities().then((e) => (this.products = e));
   }
 
