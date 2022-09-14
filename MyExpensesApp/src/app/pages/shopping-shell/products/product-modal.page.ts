@@ -29,18 +29,10 @@ export class ProductModalPage implements OnInit {
   }
 
   onAccept(product: any) {
-    this.modalController.dismiss(product);
+    this.modalController.dismiss(product, 'accept');
   }
 
   onCancel() {
-    this.modalController.dismiss();
-  }
-
-  onPropertyChanged(args: FormPropertyChangedArgs) {
-    if (['unitPrice', 'quantity'].includes(args.propertyName)) {
-      this.form.entity.totalAmount =
-        this.form.entity.unitPrice * this.form.entity.quantity;
-      this.form.updateEntity();
-    }
+    this.modalController.dismiss(null, 'cancel');
   }
 }

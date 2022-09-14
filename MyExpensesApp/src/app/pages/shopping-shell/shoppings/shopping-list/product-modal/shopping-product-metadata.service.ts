@@ -7,7 +7,7 @@ import { LookupControl } from 'src/app/components/form/controls/lookup-control';
 import { TextboxControl } from 'src/app/components/form/controls/textbox-control';
 
 @Injectable()
-export class ProductMetadataService {
+export class ShoppingProductMetadataService {
   // TODO: get from a remote source of controls metadata
   getControls() {
     const controlMetadata: FormControlMetadata<string>[] = [
@@ -30,7 +30,7 @@ export class ProductMetadataService {
       new LookupControl({
         key: 'store',
         label: 'Store',
-        endpoint: 'storeList',
+        endpoint: 'stores',
         order: 3
       }),
       // keep this as a example, may be this DropdownControl will be eliminated

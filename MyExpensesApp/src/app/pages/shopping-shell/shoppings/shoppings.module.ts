@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ShoppingPageRoutingModule } from './shopping-routing.module';
+import { ShoppingsPageRoutingModule } from './shoppings-routing.module';
 
-import { ShoppingPage } from './shopping.page';
+import { ShoppingsPage } from './shoppings.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-modal.page';
 
@@ -15,9 +15,9 @@ import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-moda
     CommonModule,
     FormsModule,
     IonicModule,
-    ShoppingPageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    ShoppingsPageRoutingModule
   ],
-  declarations: [ShoppingPage, ShoppingListtModalPage]
+  declarations: [ShoppingsPage, ShoppingListtModalPage]
 })
-export class ShoppingPageModule {}
+export class ShoppingsPageModule {}

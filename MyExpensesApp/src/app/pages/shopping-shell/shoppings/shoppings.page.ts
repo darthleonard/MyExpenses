@@ -5,10 +5,11 @@ import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-modal.page';
 
 @Component({
-  selector: 'app-shopping',
-  templateUrl: './shopping.page.html',
+  selector: 'app-shoppings',
+  templateUrl: './shoppings.page.html'
 })
-export class ShoppingPage implements OnInit {
+export class ShoppingsPage implements OnInit {
+
   @ViewChild(IonList) ionList: IonList;
 
   constructor(
@@ -68,4 +69,5 @@ export class ShoppingPage implements OnInit {
     });
     await modal.present();
   }
+
 }

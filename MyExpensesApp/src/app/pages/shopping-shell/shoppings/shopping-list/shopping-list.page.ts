@@ -4,14 +4,14 @@ import { ModalController } from '@ionic/angular';
 import { Shopping } from 'src/app/database/database';
 import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 import DataUtils from 'src/app/utils/data-utils';
-import { Product } from '../shopping';
-import { ProductModalPage } from './product-modal/product-modal.page';
+import { ShoppingProductModalPage } from './product-modal/shopping-product-modal.page';
 
 @Component({
   selector: 'app-shopping-list',
-  templateUrl: './shopping-list.page.html',
+  templateUrl: './shopping-list.page.html'
 })
 export class ShoppingListPage implements OnInit {
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly dataService: ShoppingDataService,
@@ -60,7 +60,7 @@ export class ShoppingListPage implements OnInit {
 
   private async openProductModal(selectedProduct: any) {
     const modal = await this.modalController.create({
-      component: ProductModalPage,
+      component: ShoppingProductModalPage,
       componentProps: {
         product: selectedProduct,
       },
@@ -86,4 +86,5 @@ export class ShoppingListPage implements OnInit {
     });
     await modal.present();
   }
+
 }
