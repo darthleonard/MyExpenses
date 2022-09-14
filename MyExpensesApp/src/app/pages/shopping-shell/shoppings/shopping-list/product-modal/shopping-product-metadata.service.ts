@@ -7,7 +7,7 @@ import { LookupControl } from 'src/app/components/form/controls/lookup-control';
 import { TextboxControl } from 'src/app/components/form/controls/textbox-control';
 
 @Injectable()
-export class ProductMetadataService {
+export class ShoppingProductMetadataService {
   // TODO: get from a remote source of controls metadata
   getControls() {
     const controlMetadata: FormControlMetadata<string>[] = [

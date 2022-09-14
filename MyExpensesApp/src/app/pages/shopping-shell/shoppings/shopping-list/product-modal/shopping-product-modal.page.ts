@@ -3,18 +3,18 @@ import { ModalController } from '@ionic/angular';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
 import { FormPropertyChangedArgs } from 'src/app/components/form/form-property-changed-args';
 import { FormComponent } from 'src/app/components/form/form.component';
-import { ProductMetadataService } from './product-metadata.service';
+import { ShoppingProductMetadataService } from './shopping-product-metadata.service';
 
 @Component({
-  selector: 'app-product-modal',
-  templateUrl: './product-modal.page.html',
-  providers: [ProductMetadataService],
+  selector: 'app-shopping-product-modal',
+  templateUrl: './shopping-product-modal.page.html',
+  providers: [ShoppingProductMetadataService],
 })
-export class ProductModalPage implements OnInit {
+export class ShoppingProductModalPage implements OnInit {
   @ViewChild(FormComponent) private form: FormComponent;
 
   constructor(
-    private readonly productMetadataService: ProductMetadataService,
+    private readonly productMetadataService: ShoppingProductMetadataService,
     private readonly modalController: ModalController
   ) {}
 

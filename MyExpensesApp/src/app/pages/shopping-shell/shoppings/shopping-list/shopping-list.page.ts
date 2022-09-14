@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { Shopping } from 'src/app/database/database';
 import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 import DataUtils from 'src/app/utils/data-utils';
-import { ProductModalPage } from './product-modal/product-modal.page';
+import { ShoppingProductModalPage } from './product-modal/shopping-product-modal.page';
 
 @Component({
   selector: 'app-shopping-list',
@@ -60,7 +60,7 @@ export class ShoppingListPage implements OnInit {
 
   private async openProductModal(selectedProduct: any) {
     const modal = await this.modalController.create({
-      component: ProductModalPage,
+      component: ShoppingProductModalPage,
       componentProps: {
         product: selectedProduct,
       },
