@@ -28,7 +28,7 @@ export class ProductMetadataService {
       // new LookupControl({
       //   key: 'store',
       //   label: 'Store',
-      //   endpoint: 'storeList',
+      //   endpoint: 'stores',
       //   order: 3
       // })
     ];

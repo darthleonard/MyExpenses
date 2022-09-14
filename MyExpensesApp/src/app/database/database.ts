@@ -37,14 +37,14 @@ export interface Store {
 export class AppDatabase extends Dexie {
   shoppingLists: Table<Shopping, number>;
   products: Table<Shopping, number>;
-  storeList: Table<Store, number>;
+  stores: Table<Store, number>;
 
   constructor() {
     super('MyExpensesApp');
     this.version(1).stores({
       shoppingLists: '++id',
       products: '++id',
-      storeList: '++id',
+      stores: '++id',
     });
   }
 }
