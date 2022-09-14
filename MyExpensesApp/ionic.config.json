@@ -1,0 +1,7 @@
+{
+  "name": "MyExpensesApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

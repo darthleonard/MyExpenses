@@ -1,0 +1,54 @@
+<div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div *ngFor="let controlMetadata of formControlsMetadata" class="form-row">
+      <ng-container
+        *ngIf="controlMetadata.visible"
+        [ngSwitch]="controlMetadata.controlType"
+      >
+        <app-date-control
+          *ngSwitchCase="'date'"
+          [formControltMetadata]="controlMetadata"
+          [form]="form"
+          (propertyChanged)="onPropertyChanged($event)"
+        >
+        </app-date-control>
+        <app-select-modal
+          *ngSwitchCase="'lookup'"
+          [formControltMetadata]="controlMetadata"
+          [form]="form"
+          (propertyChanged)="onPropertyChanged($event)"
+        ></app-select-modal>
+        <app-form-control
+          *ngSwitchDefault
+          [formControltMetadata]="controlMetadata"
+          [form]="form"
+          (propertyChanged)="onPropertyChanged($event)"
+        ></app-form-control>
+      </ng-container>
+    </div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngIf="showCancelButton">
+          <ion-button color="danger" (click)="onCancel()" expand="block">
+            Cancel
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid"
+            expand="block"
+          >
+            Ok
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <div *ngIf="payLoad" class="form-row">
+    <strong>Saved the following values</strong><br />{{ payLoad }}
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div style="width: 75%; margin: 0 auto;">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Month</th>
+                <th>Rent</th>
+                <th>Paid TV</th>
+                <th>Water</th>
+                <th>Electricity</th>
+                <th>Gas</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let expense of Expenses" (click) = "onRecordClick(expense)" class="s">
+                <th> {{ expense.Period | date: 'MMMM y' }} </th>
+                <td> {{ expense.Rent | currency }}</td>
+                <td> {{ expense.PaidTv | currency }}</td>
+                <td> {{ expense.Water | currency }}</td>
+                <td> {{ expense.Electricity | currency }}</td>
+                <td> {{ expense.Gas | currency }}</td>
+                <td> {{ expense.Total | currency }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="background-color: #343a40; color: white; padding: 1em;"> {{ Expenses.length }} </div>
+</div>
