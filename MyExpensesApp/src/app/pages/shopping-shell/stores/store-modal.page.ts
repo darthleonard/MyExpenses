@@ -27,8 +27,8 @@ export class StoreModalPage implements OnInit {
       .subscribe((m) => (this.metadata = m));
   }
 
-  onAccept(product: any) {
-    this.modalController.dismiss(product, 'accept');
+  onAccept(store: any) {
+    this.modalController.dismiss(store, 'accept');
   }
 
   onCancel() {

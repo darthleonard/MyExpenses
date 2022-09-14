@@ -22,38 +22,37 @@ export class StoresPage {
   }
 
   async onAddClick() {
-    await this.openProductModal();
+    await this.openStoreModal();
   }
 
-  async onEditClick(product: Store) {
-    await this.openProductModal(product);
+  async onEditClick(store: Store) {
+    await this.openStoreModal(store);
   }
 
-  onDeleteClick(product: Store) {
-    this.stores = this.stores.filter((i) => i.id !== product.id);
-    this.dataService.delete(product);
+  onDeleteClick(store: Store) {
+    this.stores = this.stores.filter((i) => i.id !== store.id);
+    this.dataService.delete(store);
   }
 
-  private async openProductModal(product?: any) {
+  private async openStoreModal(store?: any) {
     const modal = await this.modalController.create({
       component: StoreModalPage,
       componentProps: {
-        product: product,
+        product: store,
       },
       backdropDismiss: false
     });
-    modal.onDidDismiss().then(async (productData) => {
-      if (productData.role === 'cancel') {
+    modal.onDidDismiss().then(async (storeData) => {
+      if (storeData.role === 'cancel') {
         return;
       }
 
-      if (product?.id) {
-        product.name = productData.data.name;
-        product.effectiveDate = productData.data.effectiveDate;
-        product = await this.dataService.saveEntity(product);
+      if (store?.id) {
+        store.name = storeData.data.name;
+        store = await this.dataService.saveEntity(store);
       } else {
-        product = await this.dataService.saveEntity(productData.data);
-        this.stores.push(product);
+        store = await this.dataService.saveEntity(storeData.data);
+        this.stores.push(store);
       }
     });
     await modal.present();
