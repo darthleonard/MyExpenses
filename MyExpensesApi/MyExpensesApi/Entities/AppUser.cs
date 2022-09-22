@@ -1,8 +1,7 @@
 namespace MyExpensesApi.Entities
 {
-    public class AppUser
+    public class AppUser : BaseRecord
     {
-        public int Id { get; set; }
         public string Username { get; set; }
     }
 }
