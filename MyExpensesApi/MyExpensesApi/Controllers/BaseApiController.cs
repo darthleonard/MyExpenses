@@ -31,7 +31,11 @@ namespace MyExpensesApi.Controllers
 
         [HttpPost]
         public virtual async Task<bool> Create(T entity) {
-            await context.Set<T>().AddAsync(entity);
+            if(entity.Id == 0) {
+                await context.Set<T>().AddAsync(entity);
+            } else {
+                context.Set<T>().Update(entity);
+            }
             return await context.SaveChangesAsync() > 0;
         }
         
