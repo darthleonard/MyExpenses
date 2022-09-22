@@ -1,5 +1,39 @@
 <app-header title="Stores"></app-header>
 
 <ion-content>
-  stores
+  <ng-container *ngIf="!stores.length; else storesListContainer">
+    <ion-content class="ion-padding ion-text-center">
+      <ion-label>No stores found</ion-label>
+      <ion-img src="assets/empty-folder.png"></ion-img>
+    </ion-content>
+  </ng-container>
+  <ng-template #storesListContainer>
+    <ion-list>
+      <ion-item *ngFor="let store of stores">
+        <ion-item-sliding>
+          <ion-item>
+            <ion-label (click)="onEditClick(store)">
+              {{ store.name }}
+            </ion-label>
+          </ion-item>
+          <ion-item-options side="start">
+            <ion-item-option color="danger" (click)="onDeleteClick(store)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    (click)="onAddClick()"
+  >
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
