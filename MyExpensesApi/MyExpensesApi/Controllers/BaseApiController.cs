@@ -24,23 +24,23 @@ namespace MyExpensesApi.Controllers
 
         [HttpGet]
         public virtual async Task<ActionResult<IEnumerable<T>>> GetAll() {
-            var shopping = await context.Set<T>()
+            var entity = await context.Set<T>()
                 .ToListAsync();
-            return shopping;
+            return entity;
         }
 
         [HttpPost]
-        public virtual async Task<bool> Create(T shopping) {
-            await context.Set<T>().AddAsync(shopping);
+        public virtual async Task<bool> Create(T entity) {
+            await context.Set<T>().AddAsync(entity);
             return await context.SaveChangesAsync() > 0;
         }
         
         [HttpDelete("{id}")]
         public virtual async Task<bool> Delete(int id) {
-            var shopping = await context.Set<T>()
+            var entity = await context.Set<T>()
                 .Where(s => s.Id == id)
                 .SingleOrDefaultAsync();
-            context.Set<T>().Remove(shopping);
+            context.Set<T>().Remove(entity);
             return await context.SaveChangesAsync() > 0;
         }
     }
