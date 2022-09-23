@@ -1,8 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import { database } from './database';
 
 export abstract class DataServiceBase {
-  constructor(public toastController: ToastController) {}
+  private apiUrl = 'https://localhost:5001/api/';
+
+  constructor(public http: HttpClient, public toastController: ToastController) {}
 
   abstract tableName: string;
 
@@ -27,6 +30,12 @@ export abstract class DataServiceBase {
     entity.lastModDate = new Date();
     this.beforeSave(entity);
     entity.id = await table.put(entity);
+
+    this.http.post(`${this.apiUrl}${table.name}`, entity).subscribe({
+      next: e => console.log(e),
+      error: e => this.handleError(e)
+    });
+
     await this.showToast(`${this.tableName} saved`);
     return entity;
   }
@@ -34,6 +43,12 @@ export abstract class DataServiceBase {
   async delete(entity: any) {
     const table = this.getTable();
     await table.delete(entity.id);
+    
+    this.http.delete(`${this.apiUrl}${table.name}/${entity.id}`).subscribe({
+      next: e => console.log(e),
+      error: e => this.handleError(e)
+    });
+
     await this.showToast(`${this.tableName} deleted`);
   }
 
@@ -58,5 +73,10 @@ export abstract class DataServiceBase {
         color: 'success'
       })
     ).present();
+  }
+
+  private handleError(error) {
+    console.log('error handled');
+    console.log(error);
   }
 }
