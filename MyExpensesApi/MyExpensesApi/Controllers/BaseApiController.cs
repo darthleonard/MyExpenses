@@ -31,10 +31,10 @@ namespace MyExpensesApi.Controllers
 
         [HttpPost]
         public virtual async Task<bool> Create(T entity) {
-            if(entity.Id == 0) {
-                await context.Set<T>().AddAsync(entity);
-            } else {
+            if(await ExistingId(entity.Id)) {
                 context.Set<T>().Update(entity);
+            } else {
+                await context.Set<T>().AddAsync(entity);
             }
             return await context.SaveChangesAsync() > 0;
         }
@@ -46,6 +46,13 @@ namespace MyExpensesApi.Controllers
                 .SingleOrDefaultAsync();
             context.Set<T>().Remove(entity);
             return await context.SaveChangesAsync() > 0;
+        }
+
+        private async Task<bool> ExistingId(int id) {
+            var entity = await context.Set<T>()
+                .Where(s => s.Id == id)
+                .SingleOrDefaultAsync();
+            return entity != null;
         }
     }
 }
