@@ -1,4 +1,11 @@
 import Dexie, { Table } from 'dexie';
+import { ActionType } from './change-type';
+
+export interface Unsynchronized {
+  id: number,
+  table: string,
+  changeType: ActionType
+}
 
 export interface Shopping {
   id: number;
@@ -35,6 +42,7 @@ export interface Store {
 }
 
 export class AppDatabase extends Dexie {
+  unsynchronizedRecords: Table<Unsynchronized, number>
   shoppingLists: Table<Shopping, number>;
   products: Table<Shopping, number>;
   stores: Table<Store, number>;
@@ -42,6 +50,7 @@ export class AppDatabase extends Dexie {
   constructor() {
     super('MyExpensesApp');
     this.version(1).stores({
+      unsynchronizedRecords: '++id',
       shoppingLists: '++id',
       products: '++id',
       stores: '++id',
