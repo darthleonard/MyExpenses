@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { DataServiceBase } from './data.service';
-import { liveQuery } from 'dexie';
-import { database, Shopping } from './database';
 import { ToastController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingDataService extends DataServiceBase {
   
-  constructor(public toastController: ToastController) {
-    super(toastController);
+  constructor(public http: HttpClient, public toastController: ToastController) {
+    super(http, toastController);
   }
 
   tableName = "shoppingLists";
