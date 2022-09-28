@@ -38,7 +38,6 @@ export abstract class DataServiceBase {
     entity.id = await table.put(entity);
 
     this.http.post(`${this.apiUrl}${table.name}`, entity).subscribe({
-      next: (e) => console.log(e),
       error: (e) =>
         e.status === 0
           ? this.notSynchronized(entity.id, table.name, action)
@@ -54,7 +53,6 @@ export abstract class DataServiceBase {
     await table.delete(entity.id);
 
     this.http.delete(`${this.apiUrl}${table.name}/${entity.id}`).subscribe({
-      next: (e) => console.log(e),
       error: (e) =>
         e.status === 0
           ? this.notSynchronized(entity.id, table.name, ActionType.delete)
