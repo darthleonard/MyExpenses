@@ -1,0 +1,6 @@
+{
+	"appId": "com.darthleonard.myexpensesapp",
+	"appName": "MyExpensesApp",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
