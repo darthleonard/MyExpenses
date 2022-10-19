@@ -85,12 +85,29 @@ export abstract class DataServiceBase {
     ).present();
   }
 
-  private notSynchronized(id: number, tableName: string, change: ActionType) {
-    database.table('unsynchronizedRecords').add({
-      id: id,
-      table: tableName,
-      changeType: change,
-    });
+  private async notSynchronized(id: number, tableName: string, change: ActionType) {
+    const unsynchronizedRecords = database.tables.find(t => t.name === 'unsynchronizedRecords');
+    const record = await unsynchronizedRecords
+      .where({table: tableName, recordId: id})
+      .first();
+    if(!record) {
+      unsynchronizedRecords.add({
+        recordId: id,
+        table: tableName,
+        changeType: change,
+      });
+      return;  
+    }
+    switch(change) {
+      case ActionType.delete:
+        unsynchronizedRecords.delete(record.id);
+        break;
+      case ActionType.update:
+        unsynchronizedRecords.update(record.id, {changeType: change});
+        break;
+      case ActionType.insert:
+        throw `duplicated recor\n table: ${tableName} - recordId: ${id}`;
+    }
   }
 
   private handleError(error) {

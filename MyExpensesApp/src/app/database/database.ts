@@ -3,6 +3,7 @@ import { ActionType } from './change-type';
 
 export interface Unsynchronized {
   id: number,
+  recordId: number,
   table: string,
   changeType: ActionType
 }
@@ -50,7 +51,7 @@ export class AppDatabase extends Dexie {
   constructor() {
     super('MyExpensesApp');
     this.version(1).stores({
-      unsynchronizedRecords: '++id',
+      unsynchronizedRecords: '++id,recordId,table',
       shoppingLists: '++id',
       products: '++id',
       stores: '++id',
