@@ -1,21 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-settings',
-  templateUrl: './settings.page.html',
-  styleUrls: ['./settings.page.scss'],
+  templateUrl: './settings.page.html'
 })
-export class SettingsPage implements OnInit {
-  public method: string;
-  public url: string;
-  public port: number;
-
-  constructor() { }
-
-  ngOnInit() {
+export class SettingsPage {
+  config = {
+    method: "https",
+    url: "localhost",
+    port: 5001
   }
 
-  onSave() {
-    console.log(`${this,this.method}://${this.url}:${this.port}`);
+  constructor(private storage: StorageService) {
+    
+    this.load();
+  }
+
+  async onSave() {
+    await this.storage.set('config', JSON.stringify(this.config));
+  }
+
+  private async load() {
+    const savedSettings = await this.storage.get('config');
+    if(savedSettings) {
+      this.config = JSON.parse(await this.storage.get('config'));
+    } else {
+      await this.onSave();
+    }
   }
 }
