@@ -7,7 +7,11 @@ import { SyncDataService } from './sync-data.service';
   styleUrls: ['./sync.page.scss'],
 })
 export class SyncPage implements OnInit {
-  unsyncedRecords: any[];
+  unsyncedRecords: {
+    table: string,
+    count: number,
+    records: any[]
+  }[];
 
   constructor(private syncDataService: SyncDataService) { }
 
@@ -16,11 +20,32 @@ export class SyncPage implements OnInit {
   }
 
   some(records: any[]) {
-    this.unsyncedRecords = records
+    this.unsyncedRecords = [];
+    
+     const grouped = this.groupBy(records, 'table');
+     
+     this.unsyncedRecords.push({
+      table: 'products',
+      count: grouped.products.length,
+      records: grouped.products
+     });
+    
+     this.unsyncedRecords.push({
+      table: 'stores',
+      count: grouped.stores.length,
+      records: grouped.stores
+     });
   }
 
   onSync() {
+    
+  }
 
+  private groupBy(xs, key) {
+    return xs.reduce(function(rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
   }
 
 }
