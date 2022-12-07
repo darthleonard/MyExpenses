@@ -10,12 +10,12 @@ import { CloudService } from 'src/app/services/cloud.service';
 export class MainMenuComponent {
   private suscription: Subscription;
 
-  constructor(private connectivityService: CloudService) {}
+  constructor(private cloudService: CloudService) {}
 
   cloudEnabled: boolean;
 
   onMenuOpen() {
-    this.suscription = this.connectivityService.cloudEnabled$.subscribe(
+    this.suscription = this.cloudService.cloudEnabled$.subscribe(
       (r) => (this.cloudEnabled = r)
     );
   }
