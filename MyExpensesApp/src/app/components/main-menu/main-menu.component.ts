@@ -7,16 +7,12 @@ import { CloudService } from 'src/app/services/cloud.service';
   templateUrl: './main-menu.component.html',
   styleUrls: ['./main-menu.component.scss'],
 })
-export class MainMenuComponent implements OnInit {
+export class MainMenuComponent {
   private suscription: Subscription;
 
   constructor(private connectivityService: CloudService) {}
 
   cloudEnabled: boolean;
-
-  ngOnInit(): void {
-    
-  }
 
   onMenuOpen() {
     this.suscription = this.connectivityService.cloudEnabled$.subscribe(
