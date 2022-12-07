@@ -1,6 +1,12 @@
 <app-header title="settings"></app-header>
 
 <ion-content>
+  <ion-item>
+    <ion-label>Cloud storage</ion-label>
+    <ion-toggle [(ngModel)]="cloudEnabled" slot="end"></ion-toggle>
+  </ion-item>
+
+  <ng-container *ngIf="cloudEnabled">
     <ion-item>
       <ion-label position="floating">Method</ion-label>
       <ion-select interface="popover" [(ngModel)]="config.method">
@@ -8,16 +14,15 @@
         <ion-select-option value="http">http</ion-select-option>
       </ion-select>
     </ion-item>
-  <ion-item>
-    <ion-label position="floating">Url</ion-label>
-    <ion-input type="text" [(ngModel)]="config.url"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Port</ion-label>
-    <ion-input type="number" [(ngModel)]="config.port"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">Url</ion-label>
+      <ion-input type="text" [(ngModel)]="config.url"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Port</ion-label>
+      <ion-input type="number" [(ngModel)]="config.port"></ion-input>
+    </ion-item>
+  </ng-container>
 
-  <ion-button (click)="onSave()" expand="block">
-    Save
-  </ion-button>
+  <ion-button (click)="onSave()" expand="block"> Save </ion-button>
 </ion-content>

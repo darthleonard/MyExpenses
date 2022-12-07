@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { CloudService } from 'src/app/services/cloud.service';
 
 @Component({
   selector: 'app-main-menu',
@@ -6,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main-menu.component.scss'],
 })
 export class MainMenuComponent implements OnInit {
+  private suscription: Subscription;
 
-  constructor() { }
+  constructor(private connectivityService: CloudService) {}
 
-  ngOnInit() {}
+  cloudEnabled: boolean;
 
+  ngOnInit(): void {
+    
+  }
+
+  onMenuOpen() {
+    this.suscription = this.connectivityService.cloudEnabled$.subscribe(
+      (r) => (this.cloudEnabled = r)
+    );
+  }
+
+  onMenuClose() {
+    this.suscription.unsubscribe();
+  }
 }

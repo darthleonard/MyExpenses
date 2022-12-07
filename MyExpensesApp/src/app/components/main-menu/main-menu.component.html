@@ -1,4 +1,10 @@
-<ion-menu side="start" menuId="main" contentId="main">
+<ion-menu
+  side="start"
+  menuId="main"
+  contentId="main"
+  (ionWillOpen)="onMenuOpen()"
+  (ionWillClose)="onMenuClose()"
+>
   <ion-header>
     <ion-toolbar color="primary">
       <ion-buttons slot="start">
@@ -30,13 +36,13 @@
           <ion-icon slot="start" name="cash-outline"></ion-icon>
           <ion-label>Budget</ion-label>
         </ion-item>
+        <ion-item routerLink="sync" *ngIf="cloudEnabled">
+          <ion-icon slot="start" name="sync-outline"></ion-icon>
+          <ion-label>Sync</ion-label>
+        </ion-item>
         <ion-item routerLink="settings">
           <ion-icon slot="start" name="settings-outline"></ion-icon>
           <ion-label>Settings</ion-label>
-        </ion-item>
-        <ion-item routerLink="sync">
-          <ion-icon slot="start" name="sync-outline"></ion-icon>
-          <ion-label>Sync</ion-label>
         </ion-item>
       </ion-menu-toggle>
     </ion-list>

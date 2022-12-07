@@ -12,15 +12,24 @@ export class StorageService {
   }
 
   async init() {
+    if(this.storage) {
+      return;
+    }
     const storageInstance = await this.ionStorage.create();
     this.storage = storageInstance;
   }
 
-  public set(key: string, value: any) {
-    this.storage?.set(key, value);
+  async set(key: string, value: any) {
+    if(!this.storage) {
+      await this.init();
+    }
+    return await this.storage.set(key, value);
   }
 
-  public async get(key: string) {
+  async get(key: string) {
+    if(!this.storage) {
+      await this.init();
+    }
     return await this.storage.get(key);
   }
 }
