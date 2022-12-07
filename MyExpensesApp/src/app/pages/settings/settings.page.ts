@@ -14,17 +14,20 @@ export class SettingsPage {
     port: 5001
   }
 
-  constructor(private storage: StorageService, private connectivityService: CloudService) {
+  constructor(private storage: StorageService, private cloudService: CloudService) {
     this.load();
   }
 
   async onSave() {
     await this.storage.set('cloudEnabled', this.cloudEnabled);
     await this.storage.set('config', JSON.stringify(this.config));
-    this.connectivityService.setCloudEnabled(this.cloudEnabled);
+    this.cloudService.setCloudEnabled(this.cloudEnabled);
   }
 
   private async load() {
+    const cloudSuscription = this.cloudService.cloudEnabled$.subscribe(
+      (r) => (this.cloudEnabled = r)
+    );
     this.cloudEnabled = await this.storage.get('cloudEnabled');
     const savedSettings = await this.storage.get('config');
     if(savedSettings) {
@@ -32,5 +35,6 @@ export class SettingsPage {
     } else {
       await this.onSave();
     }
+    cloudSuscription.unsubscribe();
   }
 }
