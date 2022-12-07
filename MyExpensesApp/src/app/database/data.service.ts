@@ -1,15 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
+import { CloudService } from '../services/cloud.service';
 import { ActionType } from './change-type';
 import { database } from './database';
 
 export abstract class DataServiceBase {
-  private apiUrl = 'https://localhost:5001/api/';
+  private apiUrl: string;
+  private cloudEnabled: boolean;
 
   constructor(
     public http: HttpClient,
-    public toastController: ToastController
-  ) {}
+    public toastController: ToastController,
+    public cloudService: CloudService
+  ) {
+    this.init();
+  }
 
   abstract tableName: string;
 
@@ -37,12 +42,16 @@ export abstract class DataServiceBase {
     this.beforeSave(entity);
     entity.id = await table.put(entity);
 
-    this.http.post(`${this.apiUrl}${table.name}`, entity).subscribe({
-      error: (e) =>
-        e.status === 0
-          ? this.notSynchronized(entity.id, table.name, action)
-          : this.handleError(e),
-    });
+    if (this.cloudEnabled) {
+      this.http.post(`${this.apiUrl}/${table.name}`, entity).subscribe({
+        error: (e) =>
+          e.status === 0
+            ? this.notSynchronized(entity.id, table.name, action)
+            : this.handleError(e),
+      });
+    } else {
+      this.notSynchronized(entity.id, table.name, action);
+    }
 
     await this.showToast(`${this.tableName} saved`);
     return entity;
@@ -52,12 +61,16 @@ export abstract class DataServiceBase {
     const table = this.getTable();
     await table.delete(entity.id);
 
-    this.http.delete(`${this.apiUrl}${table.name}/${entity.id}`).subscribe({
-      error: (e) =>
-        e.status === 0
-          ? this.notSynchronized(entity.id, table.name, ActionType.delete)
-          : this.handleError(e),
-    });
+    if (this.cloudEnabled) {
+      this.http.delete(`${this.apiUrl}/${table.name}/${entity.id}`).subscribe({
+        error: (e) =>
+          e.status === 0
+            ? this.notSynchronized(entity.id, table.name, ActionType.delete)
+            : this.handleError(e),
+      });
+    } else {
+      this.notSynchronized(entity.id, table.name, ActionType.delete);
+    }
 
     await this.showToast(`${this.tableName} deleted`);
   }
@@ -65,6 +78,11 @@ export abstract class DataServiceBase {
   onCreateEntity(entity: any) {}
 
   beforeSave(entity: any) {}
+
+  private init() {
+    this.cloudService.cloudEnabled$.subscribe((r) => (this.cloudEnabled = r));
+    this.cloudService.getApiUrl().then((url) => (this.apiUrl = url));
+  }
 
   // TODO: there should be a better way to validate if table exists
   private getTable() {
@@ -85,25 +103,31 @@ export abstract class DataServiceBase {
     ).present();
   }
 
-  private async notSynchronized(id: number, tableName: string, change: ActionType) {
-    const unsynchronizedRecords = database.tables.find(t => t.name === 'unsynchronizedRecords');
+  private async notSynchronized(
+    id: number,
+    tableName: string,
+    change: ActionType
+  ) {
+    const unsynchronizedRecords = database.tables.find(
+      (t) => t.name === 'unsynchronizedRecords'
+    );
     const record = await unsynchronizedRecords
-      .where({table: tableName, recordId: id})
+      .where({ table: tableName, recordId: id })
       .first();
-    if(!record) {
+    if (!record) {
       unsynchronizedRecords.add({
         recordId: id,
         table: tableName,
         changeType: change,
       });
-      return;  
+      return;
     }
-    switch(change) {
+    switch (change) {
       case ActionType.delete:
         unsynchronizedRecords.delete(record.id);
         break;
       case ActionType.update:
-        unsynchronizedRecords.update(record.id, {changeType: change});
+        unsynchronizedRecords.update(record.id, { changeType: change });
         break;
       case ActionType.insert:
         throw `duplicated recor\n table: ${tableName} - recordId: ${id}`;

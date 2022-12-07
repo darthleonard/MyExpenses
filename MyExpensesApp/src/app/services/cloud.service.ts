@@ -29,6 +29,11 @@ export class CloudService {
     this.source.next(enabled);
   }
 
+  async getApiUrl() {
+    const config = JSON.parse(await this.storage.get('config'));
+    return `${config.method}://${config.url}:${config.port}`;
+  }
+
   private init() {
     this.storage.get('cloudEnabled').then(r => this.setCloudEnabled(r));
   }
