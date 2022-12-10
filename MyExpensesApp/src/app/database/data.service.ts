@@ -5,16 +5,11 @@ import { ActionType } from './change-type';
 import { database } from './database';
 
 export abstract class DataServiceBase {
-  private apiUrl: string;
-  private cloudEnabled: boolean;
-
   constructor(
     public http: HttpClient,
     public toastController: ToastController,
     public cloudService: CloudService
-  ) {
-    this.init();
-  }
+  ) { }
 
   abstract tableName: string;
 
@@ -42,12 +37,14 @@ export abstract class DataServiceBase {
     this.beforeSave(entity);
     entity.id = await table.put(entity);
 
-    if (this.cloudEnabled) {
-      this.http.post(`${this.apiUrl}/${table.name}`, entity).subscribe({
-        error: (e) =>
-          e.status === 0
-            ? this.notSynchronized(entity.id, table.name, action)
-            : this.handleError(e),
+    if (this.cloudService.online) {
+      const apiUrl = this.cloudService.getApiUrl().then(url => {
+        this.http.post(`${apiUrl}/${table.name}`, entity).subscribe({
+          error: (e) =>
+            e.status === 0
+              ? this.notSynchronized(entity.id, table.name, action)
+              : this.handleError(e),
+        });
       });
     } else {
       this.notSynchronized(entity.id, table.name, action);
@@ -61,12 +58,14 @@ export abstract class DataServiceBase {
     const table = this.getTable();
     await table.delete(entity.id);
 
-    if (this.cloudEnabled) {
-      this.http.delete(`${this.apiUrl}/${table.name}/${entity.id}`).subscribe({
-        error: (e) =>
-          e.status === 0
-            ? this.notSynchronized(entity.id, table.name, ActionType.delete)
-            : this.handleError(e),
+    if (this.cloudService.online) {
+      const apiUrl = this.cloudService.getApiUrl().then(url => {
+        this.http.delete(`${apiUrl}/${table.name}/${entity.id}`).subscribe({
+          error: (e) =>
+            e.status === 0
+              ? this.notSynchronized(entity.id, table.name, ActionType.delete)
+              : this.handleError(e),
+        });
       });
     } else {
       this.notSynchronized(entity.id, table.name, ActionType.delete);
@@ -78,11 +77,6 @@ export abstract class DataServiceBase {
   onCreateEntity(entity: any) {}
 
   beforeSave(entity: any) {}
-
-  private init() {
-    this.cloudService.cloudEnabled$.subscribe((r) => (this.cloudEnabled = r));
-    this.cloudService.getApiUrl().then((url) => (this.apiUrl = url));
-  }
 
   // TODO: there should be a better way to validate if table exists
   private getTable() {
@@ -135,7 +129,6 @@ export abstract class DataServiceBase {
   }
 
   private handleError(error) {
-    console.log('error handled');
-    console.log(error);
+    console.log('error handled\n', error);
   }
 }
