@@ -38,10 +38,6 @@ export class CloudService {
     this.reachApi();
   }
 
-  isOnline() {
-    return this.cloudSubject.getValue();
-  }
-
   async getApiUrl() {
     return this.apiUrl || (await this.loadApiUrl());
   }
@@ -51,19 +47,22 @@ export class CloudService {
   }
 
   private async loadApiUrl() {
-    const cnf = await this.storage.get('config');
-    const config = JSON.parse(cnf);
-    this.apiUrl = `${config.method}://${config.url}:${config.port}`;
+    const storedConfig = await this.storage.get('config');
+    if (!storedConfig) {
+      return;
+    }
+    const config = JSON.parse(storedConfig);
+    this.apiUrl = `${config.method}://${config.url}:${config.port}/api`;
     return this.apiUrl;
   }
 
   private async reachApi() {
-    if (!this.online) {
+    if (!this.cloudSubject.getValue()) {
       return;
     }
 
     this.http
-      .get(`${await this.getApiUrl()}/api/cloud`, { observe: 'response' })
+      .get(`${await this.getApiUrl()}/cloud`, { observe: 'response' })
       .subscribe(
         (response) => this.onlineSubject.next(response.status === 200),
         (error) => this.onlineSubject.next(false)
