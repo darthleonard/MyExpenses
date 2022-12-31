@@ -9,7 +9,7 @@ export abstract class DataServiceBase {
     public http: HttpClient,
     public toastController: ToastController,
     public cloudService: CloudService
-  ) { }
+  ) {}
 
   abstract tableName: string;
 
@@ -38,13 +38,13 @@ export abstract class DataServiceBase {
     entity.id = await table.put(entity);
 
     if (this.cloudService.online) {
-      const apiUrl = this.cloudService.getApiUrl().then(url => {
-        this.http.post(`${apiUrl}/${table.name}`, entity).subscribe({
-          error: (e) =>
-            e.status === 0
-              ? this.notSynchronized(entity.id, table.name, action)
-              : this.handleError(e),
-        });
+      const apiUrl = await this.cloudService.getApiUrl();
+
+      this.http.post(`${apiUrl}/${table.name}`, entity).subscribe({
+        error: (e) =>
+          e.status === 0
+            ? this.notSynchronized(entity.id, table.name, action)
+            : this.handleError(e),
       });
     } else {
       this.notSynchronized(entity.id, table.name, action);
@@ -59,13 +59,12 @@ export abstract class DataServiceBase {
     await table.delete(entity.id);
 
     if (this.cloudService.online) {
-      const apiUrl = this.cloudService.getApiUrl().then(url => {
-        this.http.delete(`${apiUrl}/${table.name}/${entity.id}`).subscribe({
-          error: (e) =>
-            e.status === 0
-              ? this.notSynchronized(entity.id, table.name, ActionType.delete)
-              : this.handleError(e),
-        });
+      const apiUrl = await this.cloudService.getApiUrl();
+      this.http.delete(`${apiUrl}/${table.name}/${entity.id}`).subscribe({
+        error: (e) =>
+          e.status === 0
+            ? this.notSynchronized(entity.id, table.name, ActionType.delete)
+            : this.handleError(e),
       });
     } else {
       this.notSynchronized(entity.id, table.name, ActionType.delete);
@@ -87,12 +86,12 @@ export abstract class DataServiceBase {
     return table;
   }
 
-  private async showToast(message: string) {
+  private async showToast(message: string, color = 'success') {
     (
       await this.toastController.create({
         message: message,
         duration: 2000,
-        color: 'success',
+        color: color,
       })
     ).present();
   }
@@ -129,6 +128,7 @@ export abstract class DataServiceBase {
   }
 
   private handleError(error) {
+    this.showToast(`Error ${error.status}`, 'danger');
     console.log('error handled\n', error);
   }
 }

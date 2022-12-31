@@ -16,7 +16,7 @@ export class ShoppingDataService extends DataServiceBase {
     super(http, toastController, cloudService);
   }
 
-  tableName = 'shoppingLists';
+  tableName = 'shoppings';
 
   onCreateEntity(entity: any) {
     entity.productsDetail = [];

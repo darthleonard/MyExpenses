@@ -44,7 +44,7 @@ export interface Store {
 
 export class AppDatabase extends Dexie {
   unsynchronizedRecords: Table<Unsynchronized, number>
-  shoppingLists: Table<Shopping, number>;
+  shoppings: Table<Shopping, number>;
   products: Table<Shopping, number>;
   stores: Table<Store, number>;
 
@@ -52,7 +52,7 @@ export class AppDatabase extends Dexie {
     super('MyExpensesApp');
     this.version(1).stores({
       unsynchronizedRecords: '++id,recordId,table',
-      shoppingLists: '++id',
+      shoppings: '++id',
       products: '++id',
       stores: '++id',
     });
