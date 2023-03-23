@@ -51,6 +51,7 @@ namespace MyExpensesApi.Controllers
         private async Task<bool> ExistingId(int id) {
             var entity = await context.Set<T>()
                 .Where(s => s.Id == id)
+                .AsNoTracking()
                 .SingleOrDefaultAsync();
             return entity != null;
         }

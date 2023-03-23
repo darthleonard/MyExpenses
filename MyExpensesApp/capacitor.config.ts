@@ -1,10 +1,15 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.darthleonard.myexpensesapp',
+  appId: 'com.darthleonard.myexpenses',
   appName: 'MyExpensesApp',
   webDir: 'www',
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false
+    },
+  },
 };
 
 export default config;

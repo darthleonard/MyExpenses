@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { DataServiceBase } from './data.service';
 import { ToastController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { CloudService } from '../services/cloud.service';
+import { DataServiceBase } from 'src/app/database/data.service';
+import { CloudService } from 'src/app/services/cloud.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsDataService extends DataServiceBase {
+export class SyncDataService extends DataServiceBase {
   constructor(
     public http: HttpClient,
     public toastController: ToastController,
@@ -16,5 +16,5 @@ export class ProductsDataService extends DataServiceBase {
     super(http, toastController, cloudService);
   }
 
-  tableName = 'products';
+  tableName = 'unsynchronizedRecords';
 }
