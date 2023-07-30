@@ -11,8 +11,8 @@ using MyExpensesApi.Data;
 namespace MyExpensesApi.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220922031043_shoppingTables")]
-    partial class shoppingTables
+    [Migration("20230730060804_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,7 +100,13 @@ namespace MyExpensesApi.Data.Migrations
                     b.Property<string>("Brand")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastModDate")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("OnCar")

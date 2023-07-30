@@ -98,7 +98,13 @@ namespace MyExpensesApi.Data.Migrations
                     b.Property<string>("Brand")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastModDate")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("OnCar")

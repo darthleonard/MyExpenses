@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyExpensesApi.Data.Migrations
 {
-    public partial class shoppingTables : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -87,7 +87,9 @@ namespace MyExpensesApi.Data.Migrations
                     TotalAmount = table.Column<double>(type: "REAL", nullable: false),
                     OnCar = table.Column<bool>(type: "INTEGER", nullable: false),
                     Image = table.Column<string>(type: "TEXT", nullable: true),
-                    ShoppingId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ShoppingId = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    LastModDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
