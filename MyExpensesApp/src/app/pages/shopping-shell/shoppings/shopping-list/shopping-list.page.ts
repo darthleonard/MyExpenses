@@ -79,7 +79,7 @@ export class ShoppingListPage implements OnInit {
         let index = this.shopping.productsDetail.indexOf(p);
         this.shopping.productsDetail[index] = productDetail;
       } else {
-        productDetail.id = DataUtils.createUUID();
+        productDetail.id = this.shopping.productsDetail.length + 1;
         this.shopping.productsDetail.push(productDetail);
       }
       this.updateTotal();
