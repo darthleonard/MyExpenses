@@ -18,14 +18,14 @@ namespace MyExpensesApi.Features.Shopping
         public override async Task<ActionResult<Shopping>> Get(Guid id) {
             return await context.Set<Shopping>()
                 .Where(s => s.Id == id)
-                .Include(s => s.ProductsDetail)
+                .Include(s => s.Details)
                 .SingleOrDefaultAsync();
         }
 
         [HttpGet]
         public override async Task<ActionResult<IEnumerable<Shopping>>> GetAll() {
             var shopping = await context.Set<Shopping>()
-                .Include(s => s.ProductsDetail)
+                .Include(s => s.Details)
                 .ToListAsync();
             return shopping;
         }
@@ -34,9 +34,9 @@ namespace MyExpensesApi.Features.Shopping
         public override async Task<bool> Delete(Guid id) {
             var shopping = await context.Shoppings
                 .Where(s => s.Id == id)
-                .Include(s => s.ProductsDetail)
+                .Include(s => s.Details)
                 .SingleOrDefaultAsync();
-            context.ShoppingDetails.RemoveRange(shopping.ProductsDetail);
+            context.ShoppingDetails.RemoveRange(shopping.Details);
             context.Shoppings.Remove(shopping);
             return await context.SaveChangesAsync() > 0;
         }

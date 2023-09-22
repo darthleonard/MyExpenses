@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyExpensesApi.Entities;
 
 namespace MyExpensesApi.Features.Shopping
 {
-    public class ShoppingDetail
+    public class ShoppingDetail : BaseRecord
     {
-        public int Id {get; set; }
+        public Guid ShoppingId { get; set; }
         public string name {get; set; }
         public string Brand {get; set; }
         public string Store {get; set; }
