@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyExpensesApi.Data.Migrations
 {
-    public partial class shoppingTables : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,7 @@ namespace MyExpensesApi.Data.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Brand = table.Column<string>(type: "TEXT", nullable: true),
                     Image = table.Column<string>(type: "TEXT", nullable: true),
@@ -30,8 +29,7 @@ namespace MyExpensesApi.Data.Migrations
                 name: "Shoppings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     EffectiveDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Total = table.Column<double>(type: "REAL", nullable: false),
@@ -47,8 +45,7 @@ namespace MyExpensesApi.Data.Migrations
                 name: "Stores",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastModDate = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -62,8 +59,7 @@ namespace MyExpensesApi.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Username = table.Column<string>(type: "TEXT", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastModDate = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -87,7 +83,7 @@ namespace MyExpensesApi.Data.Migrations
                     TotalAmount = table.Column<double>(type: "REAL", nullable: false),
                     OnCar = table.Column<bool>(type: "INTEGER", nullable: false),
                     Image = table.Column<string>(type: "TEXT", nullable: true),
-                    ShoppingId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ShoppingId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -19,9 +19,9 @@ namespace MyExpensesApi.Data.Migrations
 
             modelBuilder.Entity("MyExpensesApi.Entities.AppUser", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
@@ -39,9 +39,9 @@ namespace MyExpensesApi.Data.Migrations
 
             modelBuilder.Entity("MyExpensesApi.Features.Products.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Brand")
                         .HasColumnType("TEXT");
@@ -65,9 +65,9 @@ namespace MyExpensesApi.Data.Migrations
 
             modelBuilder.Entity("MyExpensesApi.Features.Shopping.Shopping", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
@@ -107,8 +107,8 @@ namespace MyExpensesApi.Data.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("REAL");
 
-                    b.Property<int?>("ShoppingId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("ShoppingId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Store")
                         .HasColumnType("TEXT");
@@ -131,9 +131,9 @@ namespace MyExpensesApi.Data.Migrations
 
             modelBuilder.Entity("MyExpensesApi.Features.Stores.Store", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");

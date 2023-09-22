@@ -15,7 +15,7 @@ namespace MyExpensesApi.Features.Shopping
         }
 
         [HttpGet("{id}")]
-        public override async Task<ActionResult<Shopping>> Get(int id) {
+        public override async Task<ActionResult<Shopping>> Get(Guid id) {
             return await context.Set<Shopping>()
                 .Where(s => s.Id == id)
                 .Include(s => s.ProductsDetail)
@@ -31,7 +31,7 @@ namespace MyExpensesApi.Features.Shopping
         }
         
         [HttpDelete("{id}")]
-        public override async Task<bool> Delete(int id) {
+        public override async Task<bool> Delete(Guid id) {
             var shopping = await context.Shoppings
                 .Where(s => s.Id == id)
                 .Include(s => s.ProductsDetail)
