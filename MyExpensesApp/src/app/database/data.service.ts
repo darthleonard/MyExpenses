@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular';
 import { CloudService } from '../services/cloud.service';
 import { ActionType } from './change-type';
 import { database } from './database';
+import DataUtils from '../utils/data-utils';
 
 export abstract class DataServiceBase {
   constructor(
@@ -18,7 +19,7 @@ export abstract class DataServiceBase {
     return table.toArray();
   }
 
-  async getEntity(id: number) {
+  async getEntity(id: string) {
     const table = this.getTable();
     return await table.get(id);
   }
@@ -28,14 +29,14 @@ export abstract class DataServiceBase {
     const table = this.getTable();
     if (!entity.hasOwnProperty('id') || !entity.id) {
       action = ActionType.insert;
-      entity.id = undefined;
+      entity.id = DataUtils.createUUID();
       entity.creationDate = new Date();
       this.onCreateEntity(entity);
     }
 
     entity.lastModDate = new Date();
     this.beforeSave(entity);
-    entity.id = await table.put(entity);
+    await table.put(entity);
 
     if (this.cloudService.online) {
       const apiUrl = await this.cloudService.getApiUrl();
@@ -97,7 +98,7 @@ export abstract class DataServiceBase {
   }
 
   private async notSynchronized(
-    id: number,
+    id: string,
     tableName: string,
     change: ActionType
   ) {

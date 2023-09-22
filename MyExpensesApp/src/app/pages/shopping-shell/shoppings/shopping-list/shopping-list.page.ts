@@ -24,7 +24,7 @@ export class ShoppingListPage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(async (p) => {
-      this.shopping = await this.dataService.getEntity(Number(p['id']));
+      this.shopping = await this.dataService.getEntity(p['id']);
       this.updateTotal();
     });
   }
