@@ -4,3 +4,4 @@ https://stackoverflow.com/questions/9612941/how-to-set-java-environment-path-in-
 
 create database
 $ dotnet ef migrations add InitialCreate -o Data/Migrations
+$ dotnet ef database update
