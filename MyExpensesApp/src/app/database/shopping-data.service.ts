@@ -19,13 +19,14 @@ export class ShoppingDataService extends DataServiceBase {
   tableName = 'shoppings';
 
   onCreateEntity(entity: any) {
-    entity.productsDetail = [];
+    entity.details = [];
     entity.total = 0;
   }
 
   beforeSave(entity: any) {
+    entity.details.forEach(d => d.shoppingId = entity.id);
     entity.total = 0;
-    entity.productsDetail
+    entity.details
       .filter((p) => p.onCar)
       .forEach((p) => (entity.total += p.totalAmount));
   }

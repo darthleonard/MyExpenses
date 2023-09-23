@@ -36,7 +36,6 @@ namespace MyExpensesApi.Features.Shopping
                 .Where(s => s.Id == id)
                 .Include(s => s.Details)
                 .SingleOrDefaultAsync();
-            context.ShoppingDetails.RemoveRange(shopping.Details);
             context.Shoppings.Remove(shopping);
             return await context.SaveChangesAsync() > 0;
         }

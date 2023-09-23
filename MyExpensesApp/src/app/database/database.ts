@@ -15,7 +15,7 @@ export interface Shopping {
   effectiveDate: Date;
   name: string;
   total: number;
-  productsDetail: {
+  details: {
     id: string,
     name: string,
     brand: string,

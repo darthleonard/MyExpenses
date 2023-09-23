@@ -16,8 +16,6 @@ namespace MyExpensesApi.Data
 
         public DbSet<Shopping> Shoppings { get; set; }
 
-        public DbSet<ShoppingDetail> ShoppingDetails { get; set; }
-
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Store> Stores { get; set; }

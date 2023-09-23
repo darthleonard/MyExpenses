@@ -38,7 +38,7 @@ export class ShoppingListPage implements OnInit {
   }
 
   onDeleteClick(product: any) {
-    this.shopping.productsDetail = this.shopping.productsDetail.filter(
+    this.shopping.details = this.shopping.details.filter(
       (p) => p.id !== product.id
     );
   }
@@ -50,10 +50,10 @@ export class ShoppingListPage implements OnInit {
   updateTotal() {
     this.totalOnCar = 0;
     this.totalExpected = 0;
-    this.shopping.productsDetail
+    this.shopping.details
       .filter((p) => p.onCar)
       .forEach((p) => (this.totalOnCar += p.totalAmount));
-    this.shopping.productsDetail.forEach(
+    this.shopping.details.forEach(
       (p) => (this.totalExpected += p.totalAmount)
     );
   }
@@ -75,12 +75,12 @@ export class ShoppingListPage implements OnInit {
       // TODO: hot fix until implementing boolean form control
       productDetail.onCar = selectedProduct.onCar;
       if (productDetail.id) {
-        let p = this.shopping.productsDetail.find((p) => p.id === productDetail.id);
-        let index = this.shopping.productsDetail.indexOf(p);
-        this.shopping.productsDetail[index] = productDetail;
+        let p = this.shopping.details.find((p) => p.id === productDetail.id);
+        let index = this.shopping.details.indexOf(p);
+        this.shopping.details[index] = productDetail;
       } else {
         productDetail.id = DataUtils.createUUID();
-        this.shopping.productsDetail.push(productDetail);
+        this.shopping.details.push(productDetail);
       }
       this.updateTotal();
     });
