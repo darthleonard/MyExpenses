@@ -1,10 +1,15 @@
-namespace MyExpensesApi.Features.Shopping
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+using MyExpensesApi.Features.Shopping;
+
+namespace MyExpensesApi.Entities
 {
-    public class ShoppingDetail
+    [Table("ShoppingDetails")]
+    public class ShoppingDetailRecord: BaseRecord
     {
-        public Guid Id { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime LastModDate { get; set; }
         public string name { get; set; }
         public string Brand { get; set; }
         public string Store { get; set; }

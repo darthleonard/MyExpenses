@@ -11,6 +11,8 @@ namespace MyExpensesApi.Extensions
             {
                 options.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             return services;
         }
     }

@@ -14,7 +14,7 @@ namespace MyExpensesApi.Data
 
         public DbSet<AppUser> Users { get; set; }
 
-        public DbSet<Shopping> Shoppings { get; set; }
+        public DbSet<ShoppingRecord> Shoppings { get; set; }
 
         public DbSet<Product> Products { get; set; }
 

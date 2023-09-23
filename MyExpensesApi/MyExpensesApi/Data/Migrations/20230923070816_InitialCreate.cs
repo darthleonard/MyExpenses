@@ -70,7 +70,7 @@ namespace MyExpensesApi.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingDetail",
+                name: "ShoppingDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -82,25 +82,24 @@ namespace MyExpensesApi.Data.Migrations
                     TotalAmount = table.Column<double>(type: "REAL", nullable: false),
                     OnCar = table.Column<bool>(type: "INTEGER", nullable: false),
                     Image = table.Column<string>(type: "TEXT", nullable: true),
-                    ShoppingId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ShoppingRecordId = table.Column<Guid>(type: "TEXT", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     LastModDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingDetail", x => x.Id);
+                    table.PrimaryKey("PK_ShoppingDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShoppingDetail_Shoppings_ShoppingId",
-                        column: x => x.ShoppingId,
+                        name: "FK_ShoppingDetails_Shoppings_ShoppingRecordId",
+                        column: x => x.ShoppingRecordId,
                         principalTable: "Shoppings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingDetail_ShoppingId",
-                table: "ShoppingDetail",
-                column: "ShoppingId");
+                name: "IX_ShoppingDetails_ShoppingRecordId",
+                table: "ShoppingDetails",
+                column: "ShoppingRecordId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -109,7 +108,7 @@ namespace MyExpensesApi.Data.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "ShoppingDetail");
+                name: "ShoppingDetails");
 
             migrationBuilder.DropTable(
                 name: "Stores");

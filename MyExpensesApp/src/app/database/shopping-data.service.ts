@@ -24,7 +24,6 @@ export class ShoppingDataService extends DataServiceBase {
   }
 
   beforeSave(entity: any) {
-    entity.details.forEach(d => d.shoppingId = entity.id);
     entity.total = 0;
     entity.details
       .filter((p) => p.onCar)
