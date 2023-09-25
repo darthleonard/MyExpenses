@@ -22,21 +22,21 @@ namespace MyExpensesApi.Features.Shopping
         [HttpGet("{id}")]
         public async Task<ActionResult<Shopping>> Get(Guid id)
         {
-            var shopping = await context.Set<ShoppingRecord>()
+            var shoppingRecord = await context.Set<ShoppingRecord>()
                 .Where(s => s.Id == id)
                 .Include(s => s.Details)
                 .SingleOrDefaultAsync();
-            var response = mapper.Map<Shopping>(shopping);
+            var response = mapper.Map<Shopping>(shoppingRecord);
             return Ok(response);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Shopping>>> GetAll()
         {
-            var shoppings = await context.Set<ShoppingRecord>()
+            var shoppingRecords = await context.Set<ShoppingRecord>()
                 .Include(s => s.Details)
                 .ToListAsync();
-            var response = mapper.Map<IEnumerable<Shopping>>(shoppings);
+            var response = mapper.Map<IEnumerable<Shopping>>(shoppingRecords);
             return Ok(response);
         }
 

@@ -8,10 +8,8 @@ namespace MyExpensesApi.Helpers
     {
         public AutoMapperShoppings()
         {
-            CreateMap<ShoppingRecord, Shopping>();
-            CreateMap<Shopping, ShoppingRecord>();
-            CreateMap<ShoppingDetailRecord, ShoppingDetail>();
-            CreateMap<ShoppingDetail, ShoppingDetailRecord>();
+            CreateMap<Shopping, ShoppingRecord>().ReverseMap();
+            CreateMap<ShoppingDetail, ShoppingDetailRecord>().ReverseMap();
         }
     }
 }
