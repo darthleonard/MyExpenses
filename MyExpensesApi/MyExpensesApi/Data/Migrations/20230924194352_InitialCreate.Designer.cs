@@ -11,7 +11,7 @@ using MyExpensesApi.Data;
 namespace MyExpensesApi.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230923070816_InitialCreate")]
+    [Migration("20230924194352_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace MyExpensesApi.Data.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("REAL");
 
-                    b.Property<Guid?>("ShoppingRecordId")
+                    b.Property<Guid>("ShoppingId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Store")
@@ -80,7 +80,7 @@ namespace MyExpensesApi.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShoppingRecordId");
+                    b.HasIndex("ShoppingId");
 
                     b.ToTable("ShoppingDetails");
                 });
@@ -159,9 +159,13 @@ namespace MyExpensesApi.Data.Migrations
 
             modelBuilder.Entity("MyExpensesApi.Entities.ShoppingDetailRecord", b =>
                 {
-                    b.HasOne("MyExpensesApi.Entities.ShoppingRecord", null)
+                    b.HasOne("MyExpensesApi.Entities.ShoppingRecord", "Shopping")
                         .WithMany("Details")
-                        .HasForeignKey("ShoppingRecordId");
+                        .HasForeignKey("ShoppingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shopping");
                 });
 
             modelBuilder.Entity("MyExpensesApi.Entities.ShoppingRecord", b =>

@@ -3,6 +3,7 @@ namespace MyExpensesApi.Features.Shopping
     public class ShoppingDetail
     {
         public Guid Id { get; set; }
+        public Guid ShoppingId { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModDate { get; set; }
         public string name { get; set; }
