@@ -71,16 +71,17 @@ export class ShoppingListPage implements OnInit {
       if (!data?.data) {
         return;
       }
-      const productDetail = data?.data;
+      const detail = data?.data;
       // TODO: hot fix until implementing boolean form control
-      productDetail.onCar = selectedProduct.onCar;
-      if (productDetail.id) {
-        let p = this.shopping.details.find((p) => p.id === productDetail.id);
+      detail.onCar = selectedProduct.onCar;
+      if (detail.id) {
+        let p = this.shopping.details.find((p) => p.id === detail.id);
         let index = this.shopping.details.indexOf(p);
-        this.shopping.details[index] = productDetail;
+        this.shopping.details[index] = detail;
       } else {
-        productDetail.id = DataUtils.createUUID();
-        this.shopping.details.push(productDetail);
+        detail.id = DataUtils.createUUID();
+        detail.shoppingId = this.shopping.id;
+        this.shopping.details.push(detail);
       }
       this.updateTotal();
     });
