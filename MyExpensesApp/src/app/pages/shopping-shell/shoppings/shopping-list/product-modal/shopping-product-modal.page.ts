@@ -29,12 +29,8 @@ export class ShoppingProductModalPage implements OnInit {
       .subscribe((m) => (this.metadata = m));
   }
 
-  onAccept(product: ShoppingDetail) {
-    product.quantity = +product.quantity;
-    product.totalAmount = +product.totalAmount;
-    product.unitPrice = +product.unitPrice;
-
-    this.modalController.dismiss(product);
+  onAccept(detail: ShoppingDetail) {
+    this.modalController.dismiss(detail);
   }
 
   onCancel() {
