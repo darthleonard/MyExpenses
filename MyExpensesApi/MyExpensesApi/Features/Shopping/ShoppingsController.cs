@@ -115,7 +115,7 @@ namespace MyExpensesApi.Features.Shopping
 
             if (await context.SaveChangesAsync() > 0)
             {
-                return Ok("Success");
+                return NoContent();
             }
 
             return BadRequest("Failed to update shopping");
