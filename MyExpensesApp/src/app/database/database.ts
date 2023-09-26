@@ -15,17 +15,20 @@ export interface Shopping {
   effectiveDate: Date;
   name: string;
   total: number;
-  details: {
-    id: string,
-    name: string,
-    brand: string,
-    store: string,
-    unitPrice: number,
-    quantity: number,
-    totalAmount?: number,
-    onCar: boolean,
-    image?: string
-  }[];
+  details: ShoppingDetail[];
+}
+
+export interface ShoppingDetail {
+  id: string,
+  shoppingId: string;
+  name: string,
+  brand: string,
+  store: string,
+  unitPrice: number,
+  quantity: number,
+  totalAmount?: number,
+  onCar: boolean,
+  image?: string
 }
 
 export interface Product {
@@ -45,7 +48,7 @@ export interface Store {
 export class AppDatabase extends Dexie {
   unsynchronizedRecords: Table<Unsynchronized, number>
   shoppings: Table<Shopping, number>;
-  products: Table<Shopping, number>;
+  products: Table<Product, number>;
   stores: Table<Store, number>;
 
   constructor() {
