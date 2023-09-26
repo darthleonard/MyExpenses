@@ -8,7 +8,9 @@ namespace MyExpensesApi.Helpers
     {
         public AutoMapperShoppings()
         {
-            CreateMap<Shopping, ShoppingRecord>().ReverseMap();
+            CreateMap<Shopping, ShoppingRecord>()
+                .ForMember(s => s.Details, o => o.Ignore())
+                .ReverseMap();
             CreateMap<ShoppingDetail, ShoppingDetailRecord>().ReverseMap();
         }
     }

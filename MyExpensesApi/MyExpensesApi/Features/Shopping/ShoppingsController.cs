@@ -102,6 +102,12 @@ namespace MyExpensesApi.Features.Shopping
                 }
             }
 
+            mapper.Map(shopping, shoppingRecord);
+            if (context.Entry(shoppingRecord).State != EntityState.Unchanged)
+            {
+                changes++;
+            }
+
             if (changes == 0)
             {
                 return Ok("Nothing to update");
