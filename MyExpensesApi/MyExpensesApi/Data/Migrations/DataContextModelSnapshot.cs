@@ -19,9 +19,9 @@ namespace MyExpensesApi.Data.Migrations
 
             modelBuilder.Entity("MyExpensesApi.Entities.AppUser", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
@@ -37,11 +37,11 @@ namespace MyExpensesApi.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MyExpensesApi.Features.Products.Product", b =>
+            modelBuilder.Entity("MyExpensesApi.Entities.ShoppingDetailRecord", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Brand")
                         .HasColumnType("TEXT");
@@ -55,19 +55,39 @@ namespace MyExpensesApi.Data.Migrations
                     b.Property<DateTime>("LastModDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
+                    b.Property<bool>("OnCar")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("REAL");
+
+                    b.Property<Guid>("ShoppingId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Store")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.HasIndex("ShoppingId");
+
+                    b.ToTable("ShoppingDetails");
                 });
 
-            modelBuilder.Entity("MyExpensesApi.Features.Shopping.Shopping", b =>
+            modelBuilder.Entity("MyExpensesApi.Entities.ShoppingRecord", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
@@ -89,51 +109,37 @@ namespace MyExpensesApi.Data.Migrations
                     b.ToTable("Shoppings");
                 });
 
-            modelBuilder.Entity("MyExpensesApi.Features.Shopping.ShoppingDetail", b =>
+            modelBuilder.Entity("MyExpensesApi.Features.Products.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Brand")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("OnCar")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("REAL");
-
-                    b.Property<int?>("ShoppingId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Store")
+                    b.Property<DateTime>("LastModDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShoppingId");
-
-                    b.ToTable("ShoppingDetails");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("MyExpensesApi.Features.Stores.Store", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
@@ -149,16 +155,20 @@ namespace MyExpensesApi.Data.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("MyExpensesApi.Features.Shopping.ShoppingDetail", b =>
+            modelBuilder.Entity("MyExpensesApi.Entities.ShoppingDetailRecord", b =>
                 {
-                    b.HasOne("MyExpensesApi.Features.Shopping.Shopping", null)
-                        .WithMany("ProductsDetail")
-                        .HasForeignKey("ShoppingId");
+                    b.HasOne("MyExpensesApi.Entities.ShoppingRecord", "Shopping")
+                        .WithMany("Details")
+                        .HasForeignKey("ShoppingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shopping");
                 });
 
-            modelBuilder.Entity("MyExpensesApi.Features.Shopping.Shopping", b =>
+            modelBuilder.Entity("MyExpensesApi.Entities.ShoppingRecord", b =>
                 {
-                    b.Navigation("ProductsDetail");
+                    b.Navigation("Details");
                 });
 #pragma warning restore 612, 618
         }

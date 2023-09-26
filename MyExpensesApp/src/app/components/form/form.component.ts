@@ -32,15 +32,13 @@ export class FormComponent implements OnInit {
     new EventEmitter();
 
   form!: FormGroup;
-  payLoad = '';
 
   ngOnInit() {
     this.updateEntity();
   }
 
   onSubmit() {
-    this.payLoad = JSON.stringify(this.form.getRawValue());
-    this.submit.emit(this.form.getRawValue());
+    this.submit.emit(this.entity);
   }
 
   onCancel() {
@@ -49,10 +47,10 @@ export class FormComponent implements OnInit {
 
   updateEntity() {
     this.formControlsMetadata.forEach((m) => {
-      if (this.entity[m.key]) {
-        m.value = this.entity[m.key];
+      if (!!this.entity[m.key]) {
+        m.value = this.castValue(this.entity[m.key], m.type);
       } else {
-        this.entity[m.key] = m.value;
+        this.entity[m.key] = this.castValue(m.value, m.type);
       }
     });
     this.form = this.metadataControlService.toFormGroup(
@@ -71,5 +69,14 @@ export class FormComponent implements OnInit {
       previousValue: previousValue,
       currentValue: args.value,
     });
+  }
+
+  private castValue(value: any, type: string) {
+    switch(type) {
+      case 'number':
+        return isNaN(Number(value)) ? 0 : Number(value);
+      default:
+        return value;
+    }
   }
 }

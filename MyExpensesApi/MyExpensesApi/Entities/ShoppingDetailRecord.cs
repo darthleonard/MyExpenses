@@ -1,11 +1,13 @@
-namespace MyExpensesApi.Features.Shopping
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MyExpensesApi.Entities
 {
-    public class ShoppingDetail
+    [Table("ShoppingDetails")]
+    public class ShoppingDetailRecord: BaseRecord
     {
-        public Guid Id { get; set; }
+        [ForeignKey("id")]
         public Guid ShoppingId { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime LastModDate { get; set; }
         public string name { get; set; }
         public string Brand { get; set; }
         public string Store { get; set; }
@@ -14,5 +16,6 @@ namespace MyExpensesApi.Features.Shopping
         public double TotalAmount { get; set; }
         public bool OnCar { get; set; }
         public string Image { get; set; }
+        public ShoppingRecord Shopping { get; set; }
     }
 }
