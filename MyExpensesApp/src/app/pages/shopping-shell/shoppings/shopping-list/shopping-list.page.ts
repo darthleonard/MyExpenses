@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { Shopping } from 'src/app/database/database';
+import { Shopping, ShoppingDetail } from 'src/app/database/database';
 import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 import DataUtils from 'src/app/utils/data-utils';
 import { ShoppingProductModalPage } from './product-modal/shopping-product-modal.page';
@@ -71,7 +71,7 @@ export class ShoppingListPage implements OnInit {
       if (!data?.data) {
         return;
       }
-      const detail = data?.data;
+      const detail = data?.data as ShoppingDetail;
       // TODO: hot fix until implementing boolean form control
       detail.onCar = selectedProduct.onCar;
       if (detail.id) {
