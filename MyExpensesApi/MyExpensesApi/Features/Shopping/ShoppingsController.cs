@@ -63,7 +63,7 @@ namespace MyExpensesApi.Features.Shopping
                 mapper.Map(shopping, shoppingRecord);
                 await context.Set<ShoppingRecord>().AddAsync(shoppingRecord);
                 await context.SaveChangesAsync();
-                return Ok("Success");
+                return NoContent();
             }
 
             var details = await context.Set<ShoppingDetailRecord>()
