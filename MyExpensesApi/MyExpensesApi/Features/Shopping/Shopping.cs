@@ -1,5 +1,3 @@
-using MyExpensesApi.Entities;
-
 namespace MyExpensesApi.Features.Shopping
 {
     public class Shopping

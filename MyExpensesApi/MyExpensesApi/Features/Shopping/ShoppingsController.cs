@@ -45,7 +45,6 @@ namespace MyExpensesApi.Features.Shopping
         {
             var shopping = await context.Shoppings
                 .Where(s => s.Id == id)
-                //.Include(s => s.Details)
                 .SingleOrDefaultAsync();
             context.Shoppings.Remove(shopping);
             return await context.SaveChangesAsync() > 0;
