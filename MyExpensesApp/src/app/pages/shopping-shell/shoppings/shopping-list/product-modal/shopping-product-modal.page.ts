@@ -4,6 +4,7 @@ import { FormControlMetadata } from 'src/app/components/form/controls/form-contr
 import { FormPropertyChangedArgs } from 'src/app/components/form/form-property-changed-args';
 import { FormComponent } from 'src/app/components/form/form.component';
 import { ShoppingProductMetadataService } from './shopping-product-metadata.service';
+import { ShoppingDetail } from 'src/app/database/database';
 
 @Component({
   selector: 'app-shopping-product-modal',
@@ -18,7 +19,7 @@ export class ShoppingProductModalPage implements OnInit {
     private readonly modalController: ModalController
   ) {}
 
-  @Input() product: any;
+  @Input() product: ShoppingDetail;
 
   metadata: FormControlMetadata<string>[];
 
@@ -28,8 +29,8 @@ export class ShoppingProductModalPage implements OnInit {
       .subscribe((m) => (this.metadata = m));
   }
 
-  onAccept(product: any) {
-    this.modalController.dismiss(product);
+  onAccept(detail: ShoppingDetail) {
+    this.modalController.dismiss(detail);
   }
 
   onCancel() {

@@ -34,7 +34,17 @@ export class FormControlComponent {
   private emitPropertyChanged() {
     this.propertyChanged.emit({
       name: this.formControltMetadata.key,
-      value: this.form.controls[this.formControltMetadata.key].value,
+      value: this.castValue(),
     });
+  }
+
+  private castValue() {
+    const value = this.form.controls[this.formControltMetadata.key].value;
+    switch(this.formControltMetadata.type) {
+      case 'number':
+        return Number(value);
+      default:
+        return value;
+    }
   }
 }
