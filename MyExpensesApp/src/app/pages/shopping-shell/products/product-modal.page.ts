@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
-import { FormPropertyChangedArgs } from 'src/app/components/form/form-property-changed-args';
 import { FormComponent } from 'src/app/components/form/form.component';
 import { ProductMetadataService } from './product-metadata.service';
 
