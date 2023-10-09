@@ -1,7 +1,7 @@
 <app-header title="Sync"></app-header>
 
 <ion-content>
-
+  Last Sync Date: {{ lastSyncDate | date : 'short'}}
   <ion-list>
     <ion-item *ngFor="let record of unsyncedRecords">
       <ion-grid fixed>
