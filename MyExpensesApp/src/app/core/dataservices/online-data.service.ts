@@ -15,7 +15,7 @@ export class OnlineDataService {
     return this.http.post(url, entity);
   }
 
-  async delete(url: string, entity: any) {
-    return this.http.delete(`${url}/${entity.id}`);
+  delete(url: string, entityId: any) {
+    return this.http.delete(`${url}/${entityId}`);
   }
 }

@@ -109,7 +109,7 @@ namespace MyExpensesApi.Features.Shopping
 
             if (changes == 0)
             {
-                return Ok("Nothing to update");
+                return NoContent(); // Nothing to update
             }
 
             if (await context.SaveChangesAsync() > 0)
