@@ -1,20 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SyncDataService } from './sync-data.service';
 import { DownloadService } from 'src/app/core/dataservices/download.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { ActionType } from 'src/app/database/change-type';
+import { uncynsedRecord } from './unsynced-record';
 
 @Component({
   selector: 'app-sync',
   templateUrl: './sync.page.html',
   styleUrls: ['./sync.page.scss'],
 })
-export class SyncPage implements OnInit {
-  unsyncedRecords: {
-    table: string;
-    count: number;
-    records: any[];
-  }[];
-
+export class SyncPage {
   constructor(
     private storage: StorageService,
     private syncDataService: SyncDataService,
@@ -22,31 +18,32 @@ export class SyncPage implements OnInit {
   ) {}
 
   lastSyncDate: Date;
-
-  ngOnInit() {
-    this.syncDataService.getEntities().then((r) => this.some(r));
-  }
+  unsyncedRecords: uncynsedRecord[];
 
   async ionViewWillEnter() {
     this.lastSyncDate = await this.storage.get('lastSyncDate');
+    this.syncDataService.getEntities().then((r) => this.loadList(r));
   }
 
-  some(records: any[]) {
+  loadList(records: any[]) {
     this.unsyncedRecords = [];
+    const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
+      arr.reduce((groups, item) => {
+        (groups[key(item)] ||= []).push(item);
+        return groups;
+      }, {} as Record<K, T[]>);
+      
+    const grouped = groupBy(records, r => r.table);
 
-    //  const grouped = this.groupBy(records, 'table');
-
-    //  this.unsyncedRecords.push({
-    //   table: 'products',
-    //   count: grouped.products.length,
-    //   records: grouped.products
-    //  });
-
-    //  this.unsyncedRecords.push({
-    //   table: 'stores',
-    //   count: grouped.stores.length,
-    //   records: grouped.stores
-    //  });
+    for(const group in grouped) {
+      this.unsyncedRecords.push({
+        table: `${group}`,
+        news: grouped[group].filter(r => r.changeType === ActionType.insert).length ?? 0,
+        updated: grouped[group].filter(r => r.changeType === ActionType.update).length ?? 0,
+        deleted: grouped[group].filter(r => r.changeType === ActionType.delete).length ?? 0,
+        records: grouped[group]
+       });
+    }
   }
 
   async onSync() {
@@ -56,12 +53,5 @@ export class SyncPage implements OnInit {
         this.lastSyncDate = new Date();
         this.storage.set('lastSyncDate', this.lastSyncDate);
       });
-  }
-
-  private groupBy(xs, key) {
-    return xs.reduce(function (rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
   }
 }
