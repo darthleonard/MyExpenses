@@ -17,8 +17,7 @@ export class DownloadService {
     for (const tableName of tableNames) {
       console.log(`downloading ${tableName}`);
       this.offlineDataService.tableName = tableName;
-      const apiUrl = await this.cloudService.getApiUrl();
-      const url = `${apiUrl}/${tableName}`;
+      const url = `${await this.cloudService.getApiUrl()}/${tableName}`;
       const entities = await this.onlineDataService
         .getEntities(url)
         .toPromise();
