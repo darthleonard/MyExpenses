@@ -16,11 +16,7 @@ export class UploadService {
   ) {}
 
   async upload() {
-    const unsynzedRecordsTable = database.tables.find(
-      (t) => t.name === 'unsynchronizedRecords'
-    );
-    const unsynzedRecords = await unsynzedRecordsTable.toArray();
-
+    const unsynzedRecords = await this.offlineDataService.getEntitiesFrom("unsynchronizedRecords");
     const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
       arr.reduce((groups, item) => {
         (groups[key(item)] ||= []).push(item);
@@ -33,17 +29,14 @@ export class UploadService {
     for (const group in grouped) {
       console.log(`uploading ${group}`);
       const url = `${apiUrl}/${group}`;
-      const table = database.tables.find((t) => t.name === group);
+      this.offlineDataService.tableName = group,
 
       // TODO: implement bulk action
       //const ids = grouped[group].map(g => g.recordId);
       //const records = await this.offlineDataService.getEntities(table, ids);
 
       grouped[group].forEach(async (record) => {
-        const r = await this.offlineDataService.getEntity(
-          table,
-          record.recordId
-        );
+        const r = await this.offlineDataService.getEntity(record.recordId);
         switch (record.changeType) {
           case ActionType.insert:
           case ActionType.update:
@@ -53,7 +46,7 @@ export class UploadService {
             await this.onlineDataService.delete(url, r).toPromise();
             break;
         }
-        this.offlineDataService.delete(unsynzedRecordsTable, record.id);
+        this.offlineDataService.deleteFrom('unsynchronizedRecords', record.id);
       });
     }
   }

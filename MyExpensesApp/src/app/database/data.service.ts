@@ -30,7 +30,7 @@ export abstract class DataServiceBase {
 
   async saveEntity(entity: any) {
     let action = ActionType.update;
-    const table = this.getTable();
+    this.offlineDataService.tableName = this.tableName;
     if (!entity.hasOwnProperty('id') || !entity.id) {
       action = ActionType.insert;
       entity.id = DataUtils.createUUID();
@@ -43,18 +43,18 @@ export abstract class DataServiceBase {
 
     if (this.cloudService.online) {
       const apiUrl = await this.cloudService.getApiUrl();
-      const url = `${apiUrl}/${table.name}`;
+      const url = `${apiUrl}/${this.tableName}`;
       try {
         await this.onlineDataService.saveEntity(url, entity).toPromise();
-        await this.offlineDataService.saveEntity(table, entity);
+        await this.offlineDataService.saveEntity(entity);
         return entity;
       } catch (error) {
         // build a structure for medium logging error info
         throw { title: 'Save Error', error: error };
       }
     } else {
-      await this.offlineDataService.saveEntity(table, entity);
-      await this.notSynchronized(entity.id, table.name, action);
+      await this.offlineDataService.saveEntity(entity);
+      await this.notSynchronized(entity.id, this.tableName, action);
       return entity;
     }
   }

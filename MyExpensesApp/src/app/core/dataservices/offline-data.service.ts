@@ -1,30 +1,68 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Table } from 'dexie';
+import { database } from 'src/app/database/database';
 import { CloudService } from 'src/app/services/cloud.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OfflineDataService {
+  private _tableName: string;
+  private table: Table;
+
   constructor(
     public readonly http: HttpClient,
     public readonly cloudService: CloudService
   ) {}
 
-  async getEntity(table: Table, id: string) {
-    return await table.get(id);
+  get tableName() {
+    return this._tableName;
   }
 
-  async getEntities(table: Table, ids: string[]) {
-    await table.bulkGet(ids);
+  set tableName(value: string) {
+    if (value === this._tableName) {
+      return;
+    }
+    this._tableName = value;
+    this.table = this.getTable(this._tableName);
   }
 
-  async saveEntity(table: Table, entity: any) {
-    await table.put(entity);
+  async getEntity(id: string) {
+    return await this.table.get(id);
   }
 
-  async delete(table: Table, id: any) {
+  async getEntities(ids: string[]) {
+    await this.table.bulkGet(ids);
+  }
+
+  async saveEntity(entity: any) {
+    await this.table.put(entity);
+  }
+
+  async delete(id: any) {
+    await this.table.delete(id);
+  }
+
+  // generic metods, may be deleted after creating dataServiceFactory
+  getEntitiesFrom(tableName: string) {
+    const table = this.getTable(tableName);
+    if (!table) {
+      throw { message: `table ${tableName} does not exist` };
+    }
+    return table.toArray();
+  }
+
+  async deleteFrom(tableName: string, id: any) {
+    const table = this.getTable(tableName);
     await table.delete(id);
+  }
+
+  private getTable(tableName: string) {
+    const table = database.tables.find((t) => t.name === tableName);
+    if (!table) {
+      throw { message: `table ${tableName} does not exist` };
+    }
+    return table;
   }
 }
