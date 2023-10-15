@@ -3,6 +3,7 @@ import { OnlineDataService } from './online-data.service';
 import { CloudService } from 'src/app/services/cloud.service';
 import { ActionType } from 'src/app/database/change-type';
 import { OfflineDataService } from './offline-data.service';
+import { groupBy } from '../functions/lists-functions';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +17,6 @@ export class UploadService {
 
   async upload() {
     const unsynzedRecords = await this.offlineDataService.getEntitiesFrom("unsynchronizedRecords");
-    const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
-      arr.reduce((groups, item) => {
-        (groups[key(item)] ||= []).push(item);
-        return groups;
-      }, {} as Record<K, T[]>);
 
     const grouped = groupBy(unsynzedRecords, (r) => r.table);
     const apiUrl = await this.cloudService.getApiUrl();
