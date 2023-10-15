@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { database } from '../../database/database';
 import { OnlineDataService } from './online-data.service';
 import { CloudService } from 'src/app/services/cloud.service';
+import { OfflineDataService } from './offline-data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,24 +10,24 @@ import { CloudService } from 'src/app/services/cloud.service';
 export class DownloadService {
   constructor(
     private readonly cloudService: CloudService,
-    private readonly onlineDataService: OnlineDataService
+    private readonly onlineDataService: OnlineDataService,
+    private readonly offlineDataService: OfflineDataService
   ) {}
 
   async download(tableNames: string[]) {
-    tableNames.forEach(async (tableName) => {
-      const table = database.tables.find((t) => t.name === tableName);
-      if (!table) {
-        throw { message: `table ${tableName} does not exist` };
-      }
-
-      console.log(`downloading ${table.name}`);
+    for (const tableName of tableNames) {
+      console.log(`downloading ${tableName}`);
+      this.offlineDataService.tableName = tableName;
       const apiUrl = await this.cloudService.getApiUrl();
-      const url = `${apiUrl}/${table.name}`;
+      const url = `${apiUrl}/${tableName}`;
       const entities = await this.onlineDataService
         .getEntities(url)
         .toPromise();
-      console.log(`downloaded ${entities.length} records from ${table.name}`);
-      table.bulkPut(entities);
-    });
+      console.log(`downloaded ${entities.length} records from ${tableName}`);
+      if(entities.length == 0) {
+        continue;
+      }
+      this.offlineDataService.saveEntities(entities);
+    }
   }
 }

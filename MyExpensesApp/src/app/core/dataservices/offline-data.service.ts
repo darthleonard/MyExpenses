@@ -40,6 +40,10 @@ export class OfflineDataService {
     await this.table.put(entity);
   }
 
+  async saveEntities(entities: any[]) {
+    await this.table.bulkPut(entities);
+  }
+
   async delete(id: any) {
     await this.table.delete(id);
   }
