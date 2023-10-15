@@ -32,8 +32,8 @@ export class OfflineDataService {
     return await this.table.get(id);
   }
 
-  async getEntities(ids: string[]) {
-    await this.table.bulkGet(ids);
+  async getEntities() {
+    return this.table.toArray();
   }
 
   async saveEntity(entity: any) {
@@ -62,7 +62,7 @@ export class OfflineDataService {
     await table.delete(id);
   }
 
-  private getTable(tableName: string) {
+  getTable(tableName: string) {
     const table = database.tables.find((t) => t.name === tableName);
     if (!table) {
       throw { message: `table ${tableName} does not exist` };
