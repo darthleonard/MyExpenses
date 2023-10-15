@@ -18,27 +18,27 @@ export class UploadService {
   async upload() {
     const unsynzedRecords = await this.offlineDataService.getEntitiesFrom("unsynchronizedRecords");
 
-    const grouped = groupBy(unsynzedRecords, (r) => r.table);
+    const groupedObject = groupBy(unsynzedRecords, (r) => r.table);
     const apiUrl = await this.cloudService.getApiUrl();
 
-    for (const group in grouped) {
-      console.log(`uploading ${group}`);
-      const url = `${apiUrl}/${group}`;
-      this.offlineDataService.tableName = group,
+    for (const groupName in groupedObject) {
+      console.log(`uploading ${groupName}`);
+      const url = `${apiUrl}/${groupName}`;
+      this.offlineDataService.tableName = groupName,
 
       // TODO: implement bulk action
       //const ids = grouped[group].map(g => g.recordId);
       //const records = await this.offlineDataService.getEntities(table, ids);
 
-      grouped[group].forEach(async (record) => {
-        const r = await this.offlineDataService.getEntity(record.recordId);
+      groupedObject[groupName].forEach(async (record) => {
         switch (record.changeType) {
           case ActionType.insert:
           case ActionType.update:
+            const r = await this.offlineDataService.getEntity(record.recordId);
             await this.onlineDataService.saveEntity(url, r).toPromise();
             break;
           case ActionType.delete:
-            await this.onlineDataService.delete(url, r).toPromise();
+            await this.onlineDataService.delete(url, record.recordId).toPromise();
             break;
         }
         this.offlineDataService.deleteFrom('unsynchronizedRecords', record.id);
