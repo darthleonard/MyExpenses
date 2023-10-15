@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { database } from '../../database/database';
 import { OnlineDataService } from './online-data.service';
 import { CloudService } from 'src/app/services/cloud.service';
 import { ActionType } from 'src/app/database/change-type';
