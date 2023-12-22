@@ -11,7 +11,7 @@ import { StoresMetadataService } from './stores-metadata.service';
 export class StoreModalPage implements OnInit {
 
   constructor(
-    private readonly productMetadataService: StoresMetadataService,
+    private readonly storesMetadataService: StoresMetadataService,
     private readonly modalController: ModalController
   ) {}
 
@@ -20,7 +20,7 @@ export class StoreModalPage implements OnInit {
   metadata: FormControlMetadata<string>[];
 
   ngOnInit() {
-    this.productMetadataService
+    this.storesMetadataService
       .getControls()
       .subscribe((m) => (this.metadata = m));
   }
