@@ -1,19 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from 'src/app/database/database';
-import { StoresDataService } from 'src/app/database/stores-data.service';
 import { StoreModalPage } from './store-modal.page';
+import { DataServiceFactory } from 'src/app/database/data-service.factory';
+import { DataService } from 'src/app/database/data-service';
 
 @Component({
   selector: 'app-stores',
   templateUrl: './stores.page.html'
 })
 export class StoresPage {
-
+  private readonly dataService: DataService;
+  
   constructor(
-    private readonly dataService: StoresDataService,
+    private readonly dataServiceFactory: DataServiceFactory,
     private readonly modalController: ModalController
-  ) {}
+  ) {
+    this.dataService = this.dataServiceFactory.build('stores');
+  }
 
   stores: Store[] = [];
 
@@ -31,7 +35,7 @@ export class StoresPage {
 
   onDeleteClick(store: Store) {
     this.stores = this.stores.filter((i) => i.id !== store.id);
-    this.dataService.delete(store);
+    this.dataService.delete(store.id);
   }
 
   private async openStoreModal(store?: any) {
