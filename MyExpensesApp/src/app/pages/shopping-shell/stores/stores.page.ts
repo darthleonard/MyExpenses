@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Store } from 'src/app/database/database';
 import { StoreModalPage } from './store-modal.page';
@@ -7,21 +7,20 @@ import { DataService } from 'src/app/database/data-service';
 
 @Component({
   selector: 'app-stores',
-  templateUrl: './stores.page.html'
+  templateUrl: './stores.page.html',
 })
 export class StoresPage {
-  private readonly dataService: DataService;
-  
+  private dataService: DataService;
+
   constructor(
     private readonly dataServiceFactory: DataServiceFactory,
     private readonly modalController: ModalController
-  ) {
-    this.dataService = this.dataServiceFactory.build('stores');
-  }
+  ) {}
 
   stores: Store[] = [];
 
   ionViewWillEnter() {
+    this.dataService = this.dataServiceFactory.build('stores');
     this.dataService.getEntities().then((e) => (this.stores = e));
   }
 
@@ -44,7 +43,7 @@ export class StoresPage {
       componentProps: {
         product: store,
       },
-      backdropDismiss: false
+      backdropDismiss: false,
     });
     modal.onDidDismiss().then(async (storeData) => {
       if (storeData.role === 'cancel') {
@@ -61,5 +60,4 @@ export class StoresPage {
     });
     await modal.present();
   }
-
 }

@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { Product } from 'src/app/database/database';
-import { ProductsDataService } from 'src/app/database/products-data.service';
 import { ProductModalPage } from './product-modal.page';
+import { DataServiceFactory } from 'src/app/database/data-service.factory';
+import { DataService } from 'src/app/database/data-service';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.page.html',
 })
 export class ProductsPage {
+  private dataService: DataService;
+
   constructor(
-    private readonly dataService: ProductsDataService,
+    private readonly dataServiceFactory: DataServiceFactory,
     private readonly modalController: ModalController,
     public toastController: ToastController
   ) {}
@@ -18,6 +21,7 @@ export class ProductsPage {
   products: Product[] = [];
 
   ionViewWillEnter() {
+    this.dataService = this.dataServiceFactory.build('products');
     this.dataService.getEntities().then((e) => (this.products = e));
   }
 
@@ -31,7 +35,7 @@ export class ProductsPage {
 
   onDeleteClick(product: Product) {
     this.products = this.products.filter((i) => i.id !== product.id);
-    this.dataService.delete(product);
+    this.dataService.delete(product.id);
   }
 
   private async openProductModal(product?: any) {
