@@ -41,7 +41,7 @@ export class StoresPage {
     const modal = await this.modalController.create({
       component: StoreModalPage,
       componentProps: {
-        product: store,
+        store: store,
       },
       backdropDismiss: false,
     });
