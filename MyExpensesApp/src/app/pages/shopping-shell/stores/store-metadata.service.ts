@@ -5,7 +5,7 @@ import { FormControlMetadata } from 'src/app/components/form/controls/form-contr
 import { TextboxControl } from 'src/app/components/form/controls/textbox-control';
 
 @Injectable()
-export class StoresMetadataService {
+export class StoreMetadataService {
   getControls() {
     const controlMetadata: FormControlMetadata<string>[] = [
       new TextboxControl({
