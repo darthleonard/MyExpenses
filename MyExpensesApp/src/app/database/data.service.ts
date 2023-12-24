@@ -4,12 +4,16 @@ import { CloudService } from '../services/cloud.service';
 import { ActionType } from './change-type';
 import { database } from './database';
 import DataUtils from '../utils/data-utils';
+import { OnlineDataService } from '../core/dataservices/online-data.service';
+import { OfflineDataService } from '../core/dataservices/offline-data.service';
 
 export abstract class DataServiceBase {
   constructor(
     public http: HttpClient,
     public toastController: ToastController,
-    public cloudService: CloudService
+    public cloudService: CloudService,
+    public onlineDataService: OnlineDataService,
+    public offlineDataService: OfflineDataService
   ) {}
 
   abstract tableName: string;
@@ -26,7 +30,7 @@ export abstract class DataServiceBase {
 
   async saveEntity(entity: any) {
     let action = ActionType.update;
-    const table = this.getTable();
+    this.offlineDataService.tableName = this.tableName;
     if (!entity.hasOwnProperty('id') || !entity.id) {
       action = ActionType.insert;
       entity.id = DataUtils.createUUID();
@@ -36,23 +40,23 @@ export abstract class DataServiceBase {
 
     entity.lastModDate = new Date();
     this.beforeSave(entity);
-    await table.put(entity);
 
     if (this.cloudService.online) {
       const apiUrl = await this.cloudService.getApiUrl();
-
-      this.http.post(`${apiUrl}/${table.name}`, entity).subscribe({
-        error: (e) =>
-          e.status === 0
-            ? this.notSynchronized(entity.id, table.name, action)
-            : this.handleError(e),
-      });
+      const url = `${apiUrl}/${this.tableName}`;
+      try {
+        await this.onlineDataService.saveEntity(url, entity).toPromise();
+        await this.offlineDataService.saveEntity(entity);
+        return entity;
+      } catch (error) {
+        // build a structure for medium logging error info
+        throw { title: 'Save Error', error: error };
+      }
     } else {
-      this.notSynchronized(entity.id, table.name, action);
+      await this.offlineDataService.saveEntity(entity);
+      await this.notSynchronized(entity.id, this.tableName, action);
+      return entity;
     }
-
-    await this.showToast(`${this.tableName} saved`);
-    return entity;
   }
 
   async delete(entity: any) {

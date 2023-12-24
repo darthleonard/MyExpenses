@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> {{ title }} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-form
+    [formControlsMetadata]="metadata"
+    [showCancelButton]="showCancelButton"
+    [entity]="entity"
+    (submit)="onAccept($event)"
+    (cancel)="onCancel()"
+  ></app-form>
+</ion-content>

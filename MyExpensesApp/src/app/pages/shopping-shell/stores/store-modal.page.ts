@@ -1,17 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
-import { StoresMetadataService } from './stores-metadata.service';
+import { StoreMetadataService } from './store-metadata.service';
 
 @Component({
   selector: 'app-store-modal',
   templateUrl: './store-modal.page.html',
-  providers: [StoresMetadataService],
+  providers: [StoreMetadataService],
 })
 export class StoreModalPage implements OnInit {
 
   constructor(
-    private readonly productMetadataService: StoresMetadataService,
+    private readonly storesMetadataService: StoreMetadataService,
     private readonly modalController: ModalController
   ) {}
 
@@ -20,7 +20,7 @@ export class StoreModalPage implements OnInit {
   metadata: FormControlMetadata<string>[];
 
   ngOnInit() {
-    this.productMetadataService
+    this.storesMetadataService
       .getControls()
       .subscribe((m) => (this.metadata = m));
   }

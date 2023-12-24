@@ -53,8 +53,8 @@ export class AppDatabase extends Dexie {
 
   constructor() {
     super('MyExpensesApp');
-    this.version(1).stores({
-      unsynchronizedRecords: 'id,recordId,table',
+    this.version(2).stores({
+      unsynchronizedRecords: '++id,[recordId+table]',
       shoppings: 'id',
       products: 'id',
       stores: 'id',

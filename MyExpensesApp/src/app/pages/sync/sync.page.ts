@@ -1,51 +1,61 @@
-import { Component, OnInit } from '@angular/core';
-import { SyncDataService } from './sync-data.service';
+import { Component } from '@angular/core';
+import { DownloadService } from 'src/app/core/dataservices/download.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { ActionType } from 'src/app/database/change-type';
+import { uncynsedRecord } from './unsynced-record';
+import { UploadService } from 'src/app/core/dataservices/upload.service';
+import { groupBy } from 'src/app/core/functions/lists-functions';
+import { DataServiceFactory } from 'src/app/database/data-service.factory';
+import { DataService } from 'src/app/database/data-service';
 
 @Component({
   selector: 'app-sync',
   templateUrl: './sync.page.html',
   styleUrls: ['./sync.page.scss'],
 })
-export class SyncPage implements OnInit {
-  unsyncedRecords: {
-    table: string,
-    count: number,
-    records: any[]
-  }[];
-
-  constructor(private syncDataService: SyncDataService) { }
-
-  ngOnInit() {
-    this.syncDataService.getEntities().then(r => this.some(r));
+export class SyncPage {
+  private readonly syncDataService: DataService;
+  
+  constructor(
+    private readonly storage: StorageService,
+    private readonly dataServiceFactory: DataServiceFactory,
+    private readonly downloadService: DownloadService,
+    private readonly uploadService: UploadService
+  ) {
+    this.syncDataService = this.dataServiceFactory.build('unsynchronizedRecords');
   }
 
-  some(records: any[]) {
+  lastSyncDate: Date;
+  unsyncedRecords: uncynsedRecord[];
+
+  async ionViewWillEnter() {
+    this.lastSyncDate = await this.storage.get('lastSyncDate');
+    this.syncDataService.getEntities().then((r) => this.loadList(r));
+  }
+
+  loadList(records: any[]) {
     this.unsyncedRecords = [];
-    
-     const grouped = this.groupBy(records, 'table');
-     
-     this.unsyncedRecords.push({
-      table: 'products',
-      count: grouped.products.length,
-      records: grouped.products
-     });
-    
-     this.unsyncedRecords.push({
-      table: 'stores',
-      count: grouped.stores.length,
-      records: grouped.stores
-     });
+    const grouped = groupBy(records, r => r.table);
+
+    for(const group in grouped) {
+      this.unsyncedRecords.push({
+        table: `${group}`,
+        news: grouped[group].filter(r => r.changeType === ActionType.insert).length ?? 0,
+        updated: grouped[group].filter(r => r.changeType === ActionType.update).length ?? 0,
+        deleted: grouped[group].filter(r => r.changeType === ActionType.delete).length ?? 0,
+        records: grouped[group]
+       });
+    }
   }
 
-  onSync() {
-    
-  }
+  async onSync() {
+    await this.uploadService.upload();
 
-  private groupBy(xs, key) {
-    return xs.reduce(function(rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
+    this.downloadService
+      .download(['products', 'stores', 'shoppings'])
+      .then(() => {
+        this.lastSyncDate = new Date();
+        this.storage.set('lastSyncDate', this.lastSyncDate);
+      });
   }
-
 }

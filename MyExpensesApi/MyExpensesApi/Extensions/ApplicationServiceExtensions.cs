@@ -9,7 +9,7 @@ namespace MyExpensesApi.Extensions
         {
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
                 options.EnableSensitiveDataLogging(true);
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

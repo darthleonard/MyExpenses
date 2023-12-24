@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
+import { cloneDeep } from 'lodash';
 import { FormControlMetadata } from './controls/form-control-metadata';
 import { FormPropertyChangedArgs } from './form-property-changed-args';
 import { MetadataControlService } from './metadata-control.service';
@@ -17,8 +17,9 @@ export class FormComponent implements OnInit {
   @Input() formControlsMetadata: FormControlMetadata<string>[] | null = [];
   @Input() showCancelButton: boolean;
   @Input() set entity(entity: any) {
-    this._entity = entity ?? {};
+    this._entity = entity ? cloneDeep(entity) : {};
   }
+
   get entity() {
     if (!this._entity) {
       this._entity = {};
@@ -72,7 +73,7 @@ export class FormComponent implements OnInit {
   }
 
   private castValue(value: any, type: string) {
-    switch(type) {
+    switch (type) {
       case 'number':
         return isNaN(Number(value)) ? 0 : Number(value);
       default:

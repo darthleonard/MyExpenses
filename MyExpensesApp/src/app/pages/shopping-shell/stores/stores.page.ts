@@ -1,23 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
 import { Store } from 'src/app/database/database';
-import { StoresDataService } from 'src/app/database/stores-data.service';
-import { StoreModalPage } from './store-modal.page';
+import { DataServiceFactory } from 'src/app/database/data-service.factory';
+import { DataService } from 'src/app/database/data-service';
+import { ModalFormComponent } from 'src/app/components/modal-form/modal-form.component';
+import { StoreMetadataService } from './store-metadata.service';
+import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
 
 @Component({
   selector: 'app-stores',
-  templateUrl: './stores.page.html'
+  templateUrl: './stores.page.html',
+  providers: [StoreMetadataService],
 })
 export class StoresPage {
+  private dataService: DataService;
+  private storesMetadata: FormControlMetadata<string>[];
+
+  @ViewChild(ModalFormComponent) private modalForm: ModalFormComponent;
 
   constructor(
-    private readonly dataService: StoresDataService,
-    private readonly modalController: ModalController
+    private readonly dataServiceFactory: DataServiceFactory,
+    private readonly storesMetadataService: StoreMetadataService
   ) {}
 
   stores: Store[] = [];
 
   ionViewWillEnter() {
+    this.dataService = this.dataServiceFactory.build('stores');
     this.dataService.getEntities().then((e) => (this.stores = e));
   }
 
@@ -31,31 +39,24 @@ export class StoresPage {
 
   onDeleteClick(store: Store) {
     this.stores = this.stores.filter((i) => i.id !== store.id);
-    this.dataService.delete(store);
+    this.dataService.delete(store.id);
+  }
+
+  async onModalConfirm(store: Store) {
+    if (!store.id) {
+      this.stores.push(store);
+    }
+    store = await this.dataService.saveEntity(store);
+    this.stores = await this.dataService.getEntities();
   }
 
   private async openStoreModal(store?: any) {
-    const modal = await this.modalController.create({
-      component: StoreModalPage,
-      componentProps: {
-        product: store,
-      },
-      backdropDismiss: false
-    });
-    modal.onDidDismiss().then(async (storeData) => {
-      if (storeData.role === 'cancel') {
-        return;
-      }
+    if (!this.storesMetadata) {
+      this.storesMetadata = await this.storesMetadataService
+        .getControls()
+        .toPromise();
+    }
 
-      if (store?.id) {
-        store.name = storeData.data.name;
-        store = await this.dataService.saveEntity(store);
-      } else {
-        store = await this.dataService.saveEntity(storeData.data);
-        this.stores.push(store);
-      }
-    });
-    await modal.present();
+    await this.modalForm.Open(this.storesMetadata, store);
   }
-
 }

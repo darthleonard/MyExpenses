@@ -45,7 +45,6 @@ namespace MyExpensesApi.Features.Shopping
         {
             var shopping = await context.Shoppings
                 .Where(s => s.Id == id)
-                //.Include(s => s.Details)
                 .SingleOrDefaultAsync();
             context.Shoppings.Remove(shopping);
             return await context.SaveChangesAsync() > 0;
@@ -110,7 +109,7 @@ namespace MyExpensesApi.Features.Shopping
 
             if (changes == 0)
             {
-                return Ok("Nothing to update");
+                return NoContent(); // Nothing to update
             }
 
             if (await context.SaveChangesAsync() > 0)
