@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { orderBy } from 'lodash';
 import { Store } from 'src/app/database/database';
 import { DataServiceFactory } from 'src/app/database/data-service.factory';
 import { DataService } from 'src/app/database/data-service';
@@ -26,7 +27,7 @@ export class StoresPage {
 
   ionViewWillEnter() {
     this.dataService = this.dataServiceFactory.build('stores');
-    this.dataService.getEntities().then((e) => (this.stores = e));
+    this.dataService.getEntities().then((e) => (this.stores = orderBy(e, 'name')));
   }
 
   async onAddClick() {

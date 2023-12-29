@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+import { orderBy } from 'lodash';
 import { Product } from 'src/app/database/database';
 import { ProductModalPage } from './product-modal.page';
 import { DataServiceFactory } from 'src/app/database/data-service.factory';
@@ -22,7 +23,7 @@ export class ProductsPage {
 
   ionViewWillEnter() {
     this.dataService = this.dataServiceFactory.build('products');
-    this.dataService.getEntities().then((e) => (this.products = e));
+    this.dataService.getEntities().then((e) => (this.products = orderBy(e, 'name')));
   }
 
   async onAddClick() {
