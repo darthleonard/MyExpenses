@@ -16,33 +16,15 @@
   <ion-content>
     <ion-list>
       <ion-menu-toggle>
-        <ion-item routerLink="dashboard">
-          <ion-icon slot="start" name="bar-chart-outline"></ion-icon>
-          <ion-label>Dashboard</ion-label>
-        </ion-item>
-        <ion-item routerLink="house">
-          <ion-icon slot="start" name="home-outline"></ion-icon>
-          <ion-label>House</ion-label>
-        </ion-item>
-        <ion-item routerLink="fuel">
-          <ion-icon slot="start" name="car-outline"></ion-icon>
-          <ion-label>Fuel</ion-label>
-        </ion-item>
-        <ion-item routerLink="shopping">
-          <ion-icon slot="start" name="cart-outline"></ion-icon>
-          <ion-label>Shopping</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-icon slot="start" name="cash-outline"></ion-icon>
-          <ion-label>Budget</ion-label>
-        </ion-item>
-        <ion-item routerLink="sync" *ngIf="cloudEnabled">
-          <ion-icon slot="start" name="sync-outline"></ion-icon>
-          <ion-label>Sync</ion-label>
-        </ion-item>
-        <ion-item routerLink="settings">
-          <ion-icon slot="start" name="settings-outline"></ion-icon>
-          <ion-label>Settings</ion-label>
+        <ion-item *ngFor="let menu of menuOptions" [routerLink]="menu.route">
+          <ion-icon
+            slot="start"
+            [name]="menu.icon"
+            [color]="menu.active ? 'primary' : ''"
+          ></ion-icon>
+          <ion-label [color]="menu.active ? 'primary' : ''">{{
+            menu.label
+          }}</ion-label>
         </ion-item>
       </ion-menu-toggle>
     </ion-list>

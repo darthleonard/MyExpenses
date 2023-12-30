@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CloudService } from 'src/app/services/cloud.service';
+import { MenuOption } from './menu-option';
 
 @Component({
   selector: 'app-main-menu',
@@ -8,19 +9,54 @@ import { CloudService } from 'src/app/services/cloud.service';
   styleUrls: ['./main-menu.component.scss'],
 })
 export class MainMenuComponent {
-  private suscription: Subscription;
-
-  constructor(private cloudService: CloudService) {}
+  constructor(private router: Router) {}
 
   cloudEnabled: boolean;
+  menuOptions = [
+    {
+      route: 'dashboard',
+      icon: 'bar-chart-outline',
+      label: 'Dashboard'
+    },
+    {
+      route: 'house',
+      icon: 'home-outline',
+      label: 'House',
+    },
+    {
+      route: 'fuel',
+      icon: 'car-outline',
+      label: 'Fuel',
+    },
+    {
+      route: 'shopping',
+      icon: 'cart-outline',
+      label: 'Shopping',
+    },
+    {
+      route: 'budget',
+      icon: 'cash-outline',
+      label: 'Budget',
+    },
+    {
+      route: 'sync',
+      icon: 'sync-outline',
+      label: 'Sync',
+    },
+    {
+      route: 'settings',
+      icon: 'settings-outline',
+      label: 'Settings',
+    }
+  ] as MenuOption[];
 
   onMenuOpen() {
-    this.suscription = this.cloudService.cloudEnabled$.subscribe(
-      (r) => (this.cloudEnabled = r)
-    );
+    this.menuOptions.forEach((m) => {
+      m.active = this.router.isActive(m.route, false);
+    });
   }
 
   onMenuClose() {
-    this.suscription.unsubscribe();
+    
   }
 }
