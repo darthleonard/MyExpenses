@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { FormControlMetadata } from './controls/form-control-metadata';
@@ -11,13 +17,23 @@ import { MetadataControlService } from './metadata-control.service';
   providers: [MetadataControlService],
 })
 export class FormComponent implements OnInit {
+  private _formControlsMetadata: FormControlMetadata<string>[] | null = [];
   private _entity: any;
+
   constructor(private metadataControlService: MetadataControlService) {}
 
-  @Input() formControlsMetadata: FormControlMetadata<string>[] | null = [];
   @Input() showCancelButton: boolean;
+
+  @Input() set formControlsMetadata(formControlsMetadata: FormControlMetadata<string>[]) {
+    this._formControlsMetadata = cloneDeep(formControlsMetadata);
+  }
+
   @Input() set entity(entity: any) {
     this._entity = entity ? cloneDeep(entity) : {};
+  }
+
+  get formControlsMetadata() {
+    return this._formControlsMetadata;
   }
 
   get entity() {
@@ -29,8 +45,7 @@ export class FormComponent implements OnInit {
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() submit: EventEmitter<any> = new EventEmitter();
-  @Output() propertyChanged: EventEmitter<FormPropertyChangedArgs> =
-    new EventEmitter();
+  @Output() propertyChanged: EventEmitter<FormPropertyChangedArgs> = new EventEmitter();
 
   form!: FormGroup;
 
