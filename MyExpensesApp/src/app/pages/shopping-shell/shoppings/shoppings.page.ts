@@ -2,19 +2,24 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonList, ModalController } from '@ionic/angular';
 import { Shopping } from 'src/app/database/database';
 import { ShoppingDataService } from 'src/app/database/shopping-data.service';
-import { ShoppingListtModalPage } from './shopping-list-modal/shopping-list-modal.page';
+import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
+import { ShoppingMetadataService } from './shopping-metadata.service';
+import { ModalFormComponent } from 'src/app/components/modal-form/modal-form.component';
 
 @Component({
   selector: 'app-shoppings',
-  templateUrl: './shoppings.page.html'
+  templateUrl: './shoppings.page.html',
+  providers: [ShoppingMetadataService]
 })
 export class ShoppingsPage implements OnInit {
+  private shoppingsMetadata: FormControlMetadata<string>[];
 
   @ViewChild(IonList) ionList: IonList;
+  @ViewChild(ModalFormComponent) private readonly modalForm: ModalFormComponent;
 
   constructor(
     private readonly dataService: ShoppingDataService,
-    private readonly modalController: ModalController
+    private readonly shoppingMetadataService: ShoppingMetadataService
   ) {}
 
   shoppingLists: Shopping[] = [];
@@ -44,30 +49,22 @@ export class ShoppingsPage implements OnInit {
     this.dataService.delete(item);
   }
 
-  private async openShoppingListtModal(shoppingList?: any) {
-    const modal = await this.modalController.create({
-      component: ShoppingListtModalPage,
-      componentProps: {
-        shoppingList: shoppingList,
-      },
-      backdropDismiss: false,
-      cssClass: 'half-modal',
-    });
-    modal.onDidDismiss().then(async (listData) => {
-      if (listData.role === 'cancel') {
-        return;
-      }
+  async onModalConfirm(shopping: Shopping) {
+    if (!shopping.id) {
+      this.shoppingLists.push(shopping);
+    }
+    shopping = await this.dataService.saveEntity(shopping);
+    this.shoppingLists = await this.dataService.getEntities();
+  }
 
-      if(shoppingList?.id) {
-        shoppingList.name = listData.data.name;
-        shoppingList.effectiveDate = listData.data.effectiveDate;
-        shoppingList = await this.dataService.saveEntity(shoppingList);
-      } else {
-        shoppingList = await this.dataService.saveEntity(listData.data);
-        this.shoppingLists.push(shoppingList);
-      }
-    });
-    await modal.present();
+  private async openShoppingListtModal(shoppingList?: any) {
+    if (!this.shoppingsMetadata) {
+      this.shoppingsMetadata = await this.shoppingMetadataService
+        .getControls()
+        .toPromise();
+    }
+
+    await this.modalForm.Open(this.shoppingsMetadata, shoppingList);
   }
 
 }
