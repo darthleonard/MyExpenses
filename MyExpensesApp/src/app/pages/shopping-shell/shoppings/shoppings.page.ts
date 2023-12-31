@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonList, ModalController } from '@ionic/angular';
+import { IonList } from '@ionic/angular';
 import { Shopping } from 'src/app/database/database';
 import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
