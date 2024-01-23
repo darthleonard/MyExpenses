@@ -2,19 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Shopping, ShoppingDetail } from 'src/app/database/database';
-import { ShoppingDataService } from 'src/app/database/shopping-data.service';
 import DataUtils from 'src/app/utils/data-utils';
 import { ShoppingProductModalPage } from './product-modal/shopping-product-modal.page';
+import { DataServiceFactory } from 'src/app/database/data-service.factory';
+import { DataService } from 'src/app/database/data-service';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.page.html'
 })
 export class ShoppingListPage implements OnInit {
+  private dataService: DataService;
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly dataService: ShoppingDataService,
+    private readonly dataServiceFactory: DataServiceFactory,
     private readonly modalController: ModalController
   ) {}
 
@@ -23,8 +25,12 @@ export class ShoppingListPage implements OnInit {
   totalExpected: number;
 
   ngOnInit() {
+    this.dataService = this.dataServiceFactory.build('shoppings');
     this.route.params.subscribe(async (p) => {
       this.shopping = await this.dataService.getEntity(p['id']);
+      if(!this.shopping.details) {
+        this.shopping.details = [];
+      }
       this.updateTotal();
     });
   }
