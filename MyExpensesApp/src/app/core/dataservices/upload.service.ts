@@ -39,6 +39,7 @@ export class UploadService {
             break;
           case ActionType.delete:
             await this.onlineDataService.delete(url, record.recordId).toPromise();
+            this.offlineDataService.delete(record.recordId);
             break;
         }
         this.offlineDataService.deleteFrom('unsynchronizedRecords', record.id);
