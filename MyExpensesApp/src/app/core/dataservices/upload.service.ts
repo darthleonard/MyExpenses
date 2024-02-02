@@ -34,12 +34,17 @@ export class UploadService {
         switch (record.changeType) {
           case ActionType.insert:
           case ActionType.update:
-            const r = await this.offlineDataService.getEntity(record.recordId);
-            await this.onlineDataService.saveEntity(url, r).toPromise();
+            const offlineRecord = await this.offlineDataService.getEntity(record.recordId);
+            await this.onlineDataService.saveEntity(url, offlineRecord).toPromise();
             break;
           case ActionType.delete:
-            await this.onlineDataService.delete(url, record.recordId).toPromise();
-            this.offlineDataService.delete(record.recordId);
+            try {
+              await this.onlineDataService.delete(url, record.recordId).toPromise();
+            } catch(e) {
+              console.log(`error deleting ${groupName} - id: ${record.recordId}`);
+            }
+            
+            await this.offlineDataService.delete(record.recordId);
             break;
         }
         this.offlineDataService.deleteFrom('unsynchronizedRecords', record.id);
