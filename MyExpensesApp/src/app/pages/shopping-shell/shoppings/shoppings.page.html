@@ -1,6 +1,24 @@
 <app-header title="Shoppings"></app-header>
 
 <ion-content>
+  <ion-list *ngIf="loading">
+    <ion-item>
+          <ion-item style="width: 100%;">
+            <ion-grid>
+              <ion-row>
+                <ion-col> <ion-skeleton-text [animated]="true"></ion-skeleton-text> </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <small><ion-skeleton-text [animated]="true"></ion-skeleton-text> </small>
+                </ion-col>
+                <ion-col> <ion-skeleton-text [animated]="true"></ion-skeleton-text> </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+    </ion-item>
+  </ion-list>
+
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>

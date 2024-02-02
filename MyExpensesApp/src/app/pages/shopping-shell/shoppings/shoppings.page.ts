@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonList } from '@ionic/angular';
 import { Shopping } from 'src/app/database/database';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
@@ -24,17 +24,24 @@ export class ShoppingsPage {
     private readonly shoppingMetadataService: ShoppingMetadataService
   ) {}
 
+  loading = false;
   shoppingLists: Shopping[] = [];
 
   ionViewWillEnter() {
+    this.loading = true;
     this.dataService = this.dataServiceFactory.build('shoppings');
-    this.dataService.getEntities().then((e) => (this.shoppingLists = e));
+    this.dataService.getEntities().then((e) => {
+      this.shoppingLists = e;
+      this.loading = false;
+    });
   }
 
   doRefresh(event: any) {
+    this.loading = true;
     this.dataService.getEntities().then((e) => {
       this.shoppingLists = e;
       event.target.complete();
+      this.loading = false;
     });
   }
 
