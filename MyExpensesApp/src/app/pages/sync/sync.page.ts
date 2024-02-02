@@ -56,6 +56,7 @@ export class SyncPage {
       .then(() => {
         this.lastSyncDate = new Date();
         this.storage.set('lastSyncDate', this.lastSyncDate);
+        this.syncDataService.getEntities().then((r) => this.loadList(r));
       });
   }
 }
