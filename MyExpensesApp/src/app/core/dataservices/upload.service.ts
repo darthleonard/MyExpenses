@@ -41,7 +41,7 @@ export class UploadService {
             await this.onlineDataService.delete(url, record.recordId).toPromise();
             break;
         }
-        this.offlineDataService.deleteFrom('unsynchronizedRecords', record.id);
+        await this.offlineDataService.deleteFrom('unsynchronizedRecords', record.id);
       });
     }
   }
