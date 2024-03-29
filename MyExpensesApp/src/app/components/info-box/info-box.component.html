@@ -1,0 +1,12 @@
+<div class="content">
+  <ng-container *ngIf="loading; else info">
+    <ion-skeleton-text class="message" [animated]="true"></ion-skeleton-text>
+    <ion-skeleton-text class="action" [animated]="true"></ion-skeleton-text>
+  </ng-container>
+
+  <ng-template #info>
+    <div class="message">{{ message }}</div>
+    <div class="action" *ngIf="actionTitle" (click)="onActionClick()">{{ actionTitle | uppercase }}</div>
+  </ng-template>
+  
+</div>

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { InfoBoxComponent } from 'src/app/components/info-box/info-box.component';
 import { CloudService } from 'src/app/services/cloud.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -8,6 +9,8 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './settings.page.html',
 })
 export class SettingsPage {
+  @ViewChild(InfoBoxComponent) infoBoxComponent: InfoBoxComponent;
+
   cloudEnabled = true;
   config = {
     method: 'https',
@@ -18,7 +21,7 @@ export class SettingsPage {
   constructor(
     private toastController: ToastController,
     private storage: StorageService,
-    private cloudService: CloudService
+    public cloudService: CloudService
   ) {
     this.load();
   }
@@ -33,6 +36,12 @@ export class SettingsPage {
       color: 'success',
     });
     toast.present();
+  }
+
+  onActionClick() {
+    this.infoBoxComponent.setLoading(true);
+    this.cloudService.setCloudEnabled(this.cloudEnabled);
+    setTimeout(() => {this.infoBoxComponent?.setLoading(false)}, 2000);
   }
 
   private async load() {

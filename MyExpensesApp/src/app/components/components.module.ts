@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { SelectModalComponent } from './controls/select-modal/select-modal.component';
 import { SearchFilterPipe } from './controls/select-modal/search-filter.pipe';
 import { DateControlComponent } from './controls/date-control/date-control.component';
+import { InfoBoxComponent } from './info-box/info-box.component';
 import { ModalComponent } from './modal-form/modal.component';
 import { ModalFormComponent } from './modal-form/modal-form.component';
 
@@ -25,6 +26,7 @@ import { ModalFormComponent } from './modal-form/modal-form.component';
     MainMenuComponent,
     SelectModalComponent,
     DateControlComponent,
+    InfoBoxComponent,
     ModalComponent,
     ModalFormComponent,
     SearchFilterPipe
@@ -36,6 +38,7 @@ import { ModalFormComponent } from './modal-form/modal-form.component';
     MainMenuComponent,
     SelectModalComponent,
     DateControlComponent,
+    InfoBoxComponent,
     ModalFormComponent
   ],
   imports: [
