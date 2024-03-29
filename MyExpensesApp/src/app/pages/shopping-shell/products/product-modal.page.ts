@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
-import { FormComponent } from 'src/app/components/form/form.component';
 import { ProductMetadataService } from './product-metadata.service';
 
 @Component({
@@ -10,8 +9,6 @@ import { ProductMetadataService } from './product-metadata.service';
   providers: [ProductMetadataService],
 })
 export class ProductModalPage implements OnInit {
-  @ViewChild(FormComponent) private form: FormComponent;
-
   constructor(
     private readonly productMetadataService: ProductMetadataService,
     private readonly modalController: ModalController

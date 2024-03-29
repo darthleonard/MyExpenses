@@ -14,6 +14,8 @@ import { SelectModalComponent } from './controls/select-modal/select-modal.compo
 import { SearchFilterPipe } from './controls/select-modal/search-filter.pipe';
 import { DateControlComponent } from './controls/date-control/date-control.component';
 import { InfoBoxComponent } from './info-box/info-box.component';
+import { ModalComponent } from './modal-form/modal.component';
+import { ModalFormComponent } from './modal-form/modal-form.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { InfoBoxComponent } from './info-box/info-box.component';
     SelectModalComponent,
     DateControlComponent,
     InfoBoxComponent,
+    ModalComponent,
+    ModalFormComponent,
     SearchFilterPipe
   ],
   exports:[
@@ -34,7 +38,8 @@ import { InfoBoxComponent } from './info-box/info-box.component';
     MainMenuComponent,
     SelectModalComponent,
     DateControlComponent,
-    InfoBoxComponent
+    InfoBoxComponent,
+    ModalFormComponent
   ],
   imports: [
     CommonModule,

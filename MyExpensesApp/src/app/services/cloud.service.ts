@@ -52,7 +52,11 @@ export class CloudService {
       return;
     }
     const config = JSON.parse(storedConfig);
-    this.apiUrl = `${config.method}://${config.url}:${config.port}/api`;
+    let portSection = '';
+    if(config.port) {
+      portSection = `:${config.port}`;
+    }
+    this.apiUrl = `${config.method}://${config.url}${portSection}/api`;
     return this.apiUrl;
   }
 
