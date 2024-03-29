@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { SelectModalComponent } from './controls/select-modal/select-modal.component';
 import { SearchFilterPipe } from './controls/select-modal/search-filter.pipe';
 import { DateControlComponent } from './controls/date-control/date-control.component';
+import { InfoBoxComponent } from './info-box/info-box.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DateControlComponent } from './controls/date-control/date-control.compo
     MainMenuComponent,
     SelectModalComponent,
     DateControlComponent,
+    InfoBoxComponent,
     SearchFilterPipe
   ],
   exports:[
@@ -31,7 +33,8 @@ import { DateControlComponent } from './controls/date-control/date-control.compo
     HeaderComponent,
     MainMenuComponent,
     SelectModalComponent,
-    DateControlComponent
+    DateControlComponent,
+    InfoBoxComponent
   ],
   imports: [
     CommonModule,
