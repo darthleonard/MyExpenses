@@ -39,5 +39,12 @@
     </ion-item>
   </ion-list>
 
-  <ion-button (click)="onSync()" expand="block"> Synchronize </ion-button>
+  <app-info-box
+      *ngIf="!cloudService.online"
+      message="Server not accesible"
+      actionTitle="try again"
+      (actionClick)="onActionClick()"
+    >
+    </app-info-box>
+  <ion-button (click)="onSync()" expand="block" [disabled]="!cloudService.online"> Synchronize </ion-button>
 </ion-content>
