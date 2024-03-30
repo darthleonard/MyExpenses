@@ -13,7 +13,7 @@
         <ion-item-sliding>
           <ion-item>
             <ion-label (click)="onEditClick(store)">
-              {{ store.name }}
+              {{ store.name | titlecase }}
             </ion-label>
           </ion-item>
           <ion-item-options side="start">
@@ -37,4 +37,8 @@
     </ion-fab-button>
   </ion-fab>
 </ion-content>
-<modal-form title="Store" (confirm)="onModalConfirm($event)"></modal-form>
+<modal-form
+  title="Store"
+  [validateFn]="validateFn"
+  (confirm)="onModalConfirm($event)"
+></modal-form>

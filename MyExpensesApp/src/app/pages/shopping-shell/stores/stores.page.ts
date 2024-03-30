@@ -42,6 +42,17 @@ export class StoresPage {
     this.dataService.delete(store.id);
   }
 
+  validateFn = (store: Store) => {
+    if (
+      this.stores
+        .map((s) => s.name.toLowerCase())
+        .includes(store.name.toLowerCase())
+    ) {
+      return { message: `store [${store.name}] already exist` };
+    }
+    return null;
+  };
+
   async onModalConfirm(store: Store) {
     if (!store.id) {
       this.stores.push(store);
