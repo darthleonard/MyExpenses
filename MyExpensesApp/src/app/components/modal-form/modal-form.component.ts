@@ -12,6 +12,7 @@ export class ModalFormComponent {
 
   @Input() title: string = 'Record';
   @Input() showCancelButton: boolean = true;
+  @Input() validateFn: (args: any) => {};
   @Output() confirm = new EventEmitter<any>();
 
   async Open(metadata: FormControlMetadata<string>[], entity: any) {
@@ -22,6 +23,7 @@ export class ModalFormComponent {
         entity: entity,
         metadata: metadata,
         showCancelButton: this.showCancelButton,
+        validateFn: this.validateFn
       },
       backdropDismiss: false,
     });

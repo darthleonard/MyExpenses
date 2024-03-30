@@ -5,6 +5,8 @@
 </ion-header>
 
 <ion-content>
+  <app-info-box *ngIf="validationResult" [message]="validationResult.message">
+  </app-info-box>
   <app-form
     [formControlsMetadata]="metadata"
     [showCancelButton]="showCancelButton"

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DownloadService } from 'src/app/core/dataservices/download.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { ActionType } from 'src/app/database/change-type';
@@ -7,6 +7,8 @@ import { UploadService } from 'src/app/core/dataservices/upload.service';
 import { groupBy } from 'src/app/core/functions/lists-functions';
 import { DataServiceFactory } from 'src/app/database/data-service.factory';
 import { DataService } from 'src/app/database/data-service';
+import { CloudService } from 'src/app/services/cloud.service';
+import { InfoBoxComponent } from 'src/app/components/info-box/info-box.component';
 
 @Component({
   selector: 'app-sync',
@@ -14,13 +16,16 @@ import { DataService } from 'src/app/database/data-service';
   styleUrls: ['./sync.page.scss'],
 })
 export class SyncPage {
+  @ViewChild(InfoBoxComponent) private infoBoxComponent: InfoBoxComponent;
+  
   private readonly syncDataService: DataService;
   
   constructor(
     private readonly storage: StorageService,
     private readonly dataServiceFactory: DataServiceFactory,
     private readonly downloadService: DownloadService,
-    private readonly uploadService: UploadService
+    private readonly uploadService: UploadService,
+    public cloudService: CloudService
   ) {
     this.syncDataService = this.dataServiceFactory.build('unsynchronizedRecords');
   }
@@ -57,5 +62,11 @@ export class SyncPage {
         this.lastSyncDate = new Date();
         this.storage.set('lastSyncDate', this.lastSyncDate);
       });
+  }
+
+  onActionClick() {
+    this.infoBoxComponent.setLoading(true);
+    this.cloudService.setCloudEnabled(true);
+    setTimeout(() => {this.infoBoxComponent?.setLoading(false)}, 2000);
   }
 }
