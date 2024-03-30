@@ -2,9 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Store } from 'src/app/database/database';
 import { DataServiceFactory } from 'src/app/database/data-service.factory';
 import { DataService } from 'src/app/database/data-service';
-import { ModalFormComponent } from 'src/app/components/modal-form/modal-form.component';
 import { StoreMetadataService } from './store-metadata.service';
-import { FormControlMetadata } from 'src/app/components/form/controls/form-control-metadata';
+import { FormControlMetadata } from '@components/form/controls/form-control-metadata';
+import { ModalFormComponent } from '@components/modal-form/modal-form.component';
 
 @Component({
   selector: 'app-stores',
