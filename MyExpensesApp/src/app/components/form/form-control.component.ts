@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 import { FormControlMetadata } from './controls/form-control-metadata';
 
@@ -9,7 +9,7 @@ import { FormControlMetadata } from './controls/form-control-metadata';
 })
 export class FormControlComponent {
   @Input() formControltMetadata!: FormControlMetadata<string>;
-  @Input() form!: FormGroup;
+  @Input() form!: UntypedFormGroup;
 
   @Output() propertyChanged: EventEmitter<{ name: string; value: any }> =
     new EventEmitter();

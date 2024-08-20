@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { FormControlMetadata } from './controls/form-control-metadata';
 import { FormPropertyChangedArgs } from './form-property-changed-args';
@@ -32,7 +32,7 @@ export class FormComponent implements OnInit {
   @Output() propertyChanged: EventEmitter<FormPropertyChangedArgs> =
     new EventEmitter();
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
 
   ngOnInit() {
     this.updateEntity();
